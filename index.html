@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- মোবাইল ভিউপোর্ট জুম লক (user-scalable=no & touch-action) -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Shop Expense Tracker with Login</title>
     <style>
@@ -11,14 +10,12 @@
             margin: 0; 
             padding: 0; 
             font-family: Arial, sans-serif; 
-            /* দুই আঙুলে জুম বা পিঞ্চ জুম বন্ধ কিন্তু স্বাভাবিক স্ক্রোল চালু */
             touch-action: pan-x pan-y; 
         }
         body { 
             background-color: #f4f7f6; 
             padding: 15px; 
             color: #333; 
-            /* আইফোনে জুম হওয়া ঠেকাতে */
             -webkit-text-size-adjust: 100%; 
         }
         .container { max-width: 500px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
@@ -119,7 +116,6 @@
         .balance { color: #2980b9; }
 
         form { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-        /* Mobile Input Auto-Zoom Preventer: Font-size at least 16px for input */
         input, select, textarea, button { padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 6px; }
         button { background: #27ae60; color: white; border: none; cursor: pointer; font-weight: bold; }
         button:hover { background: #219150; }
@@ -194,7 +190,6 @@
         .keep-note-date { font-size: 11px; color: #5f6368; font-weight: bold; margin-bottom: 4px; }
         .keep-note-text { font-size: 13px; color: #202124; white-space: pre-wrap; margin-bottom: 8px; }
 
-        /* Shop Total Card inside Modal */
         .shop-total-item {
             background: #f8f9fa;
             border: 1px solid #e9ecef;
@@ -302,7 +297,6 @@
                 <button type="button" class="close-modal" onclick="closeAllShopsModal()">X</button>
             </div>
             
-            <!-- Grand Total Summary Box -->
             <div class="grand-total-box">
                 <h4>✨ সর্বমোট হিসাব (সকল দোকান মিলিয়ে)</h4>
                 <div class="grand-total-flex">
@@ -312,7 +306,6 @@
                 </div>
             </div>
 
-            <!-- Individual Shops Breakdown Container -->
             <div id="all-shops-list-container"></div>
         </div>
     </div>
@@ -348,8 +341,20 @@
         </div>
     </div>
 
+    <!-- iPhone Backup Text Modal -->
+    <div id="backupModal" class="modal">
+        <div class="modal-content" style="text-align: center;">
+            <div class="modal-header">
+                <h3>☁️ Backup Data (iPhone)</h3>
+                <button type="button" class="close-modal" onclick="document.getElementById('backupModal').style.display='none'">X</button>
+            </div>
+            <p style="font-size: 13px; color: #666; margin-bottom: 10px;">নিচের টেক্সটগুলো কপি করে আপনার ফোনের Notes বা কোনো জায়গায় সেভ করে রাখুন। রিস্টোর করার সময় এটি কাজে লাগবে।</p>
+            <textarea id="backup-text-area" rows="6" style="width:100%; font-size:11px; padding:8px; border:1px solid #ccc; border-radius:6px; margin-bottom:10px;" readonly></textarea>
+            <button type="button" onclick="copyBackupText()" style="background: #2980b9; width: 100%; padding: 10px; font-size: 14px;">Copy Backup Code</button>
+        </div>
+    </div>
+
 <script>
-    // Safari/iOS-এ দুই আঙুলে জুম পুরোপুরি স্ক্রিপ্ট লেভেলে ব্লক করার জন্য:
     document.addEventListener('gesturestart', function (e) {
         e.preventDefault();
     });
@@ -873,14 +878,40 @@
         }
     }
 
+    // iPhone-Friendly Backup Function
     function backupData() {
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(allUsersData));
-        const downloadAnchor = document.createElement('a');
-        downloadAnchor.setAttribute("href", dataStr);
-        downloadAnchor.setAttribute("download", `shop_tracker_backup_${getTodayDate()}.json`);
-        document.body.appendChild(downloadAnchor);
-        downloadAnchor.click();
-        downloadAnchor.remove();
+        const dataJson = JSON.stringify(allUsersData);
+        
+        // প্রথমে সরাসরি ফাইল ডাউনলোড করার চেষ্টা করবে
+        try {
+            const blob = new Blob([dataJson], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.href = url;
+            downloadAnchor.download = `shop_tracker_backup_${getTodayDate()}.json`;
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            URL.revokeObjectURL(url);
+        } catch (e) {
+            // যদি সাফারি ব্লক করে, তবে কোড পপআপ উইন্ডো দেখাবে
+            console.log("Direct download failed, showing text modal.");
+        }
+
+        // সব ডিভাইসের জন্য ফেইলসেফ হিসেবে টেক্সট পপআপ দেখাবে
+        document.getElementById('backup-text-area').value = dataJson;
+        document.getElementById('backupModal').style.display = 'flex';
+    }
+
+    function copyBackupText() {
+        const textArea = document.getElementById('backup-text-area');
+        textArea.select();
+        textArea.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(textArea.value).then(() => {
+            alert("ব্যাকআপ কোড কপি হয়ে গেছে! এটি আপনার আইফোনের Notes অ্যাপে পেস্ট করে সেভ করে রাখুন।");
+        }).catch(err => {
+            alert("কপি করা যায়নি, দয়া করে টেক্সট সিলেক্ট করে ম্যানুয়ালি কপি করুন।");
+        });
     }
 
     function importData(event) {
