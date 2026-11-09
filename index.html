@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Shop Expense Tracker with Login</title>
+<!-- iPhone Full Screen / App Mode Settings -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Shop Tracker">
+
+<!-- Standard Web App Support -->
+<meta name="mobile-web-app-capable" content="yes">
     <style>
         * { 
             box-sizing: border-box; 
@@ -385,6 +392,15 @@
             document.getElementById('welcome-user').innerText = `User: ${currentUser}`;
             
             let shops = getUserShops();
+            
+            // ডিফল্টভাবে "টাকা পাবো" দোকানটি যুক্ত করে দেওয়া যদি নতুন ইউজার হয়
+            if (!shops["টাকা পাবো"]) {
+                shops["টাকা পাবো"] = { transactions: [], notes: [] };
+            }
+            if (!shops["Shop 1"]) {
+                shops["Shop 1"] = { transactions: [], notes: [] };
+            }
+
             const shopKeys = Object.keys(shops);
             if (shopKeys.length > 0 && !shops[currentShop]) {
                 currentShop = shopKeys[0];
@@ -418,7 +434,10 @@
             }
             allUsersData[phone] = {
                 password: pass,
-                shops: { "Shop 1": { transactions: [], notes: [] } }
+                shops: { 
+                    "Shop 1": { transactions: [], notes: [] },
+                    "টাকা পাবো": { transactions: [], notes: [] }
+                }
             };
             localStorage.setItem('allUsersData', JSON.stringify(allUsersData));
             alert("সফলভাবে অ্যাকাউন্ট তৈরি হয়েছে! এখন লগইন করুন।");
@@ -444,10 +463,23 @@
 
     function getUserShops() {
         if (!allUsersData[currentUser]) {
-            allUsersData[currentUser] = { password: "", shops: { "Shop 1": { transactions: [], notes: [] } } };
+            allUsersData[currentUser] = { 
+                password: "", 
+                shops: { 
+                    "Shop 1": { transactions: [], notes: [] },
+                    "টাকা পাবো": { transactions: [], notes: [] }
+                } 
+            };
         }
         if (!allUsersData[currentUser].shops) {
-            allUsersData[currentUser].shops = { "Shop 1": { transactions: [], notes: [] } };
+            allUsersData[currentUser].shops = { 
+                "Shop 1": { transactions: [], notes: [] },
+                "টাকা পাবো": { transactions: [], notes: [] }
+            };
+        }
+        // যদি পুরনো ইউজারের ক্ষেত্রে "টাকা পাবো" না থাকে, তবে অটো যুক্ত হবে
+        if (!allUsersData[currentUser].shops["টাকা পাবো"]) {
+            allUsersData[currentUser].shops["টাকা পাবো"] = { transactions: [], notes: [] };
         }
         return allUsersData[currentUser].shops;
     }
@@ -465,6 +497,7 @@
         
         if (shopKeys.length === 0) {
             shops["Shop 1"] = { transactions: [], notes: [] };
+            shops["টাকা পাবো"] = { transactions: [], notes: [] };
             currentShop = "Shop 1";
         }
 
@@ -514,11 +547,19 @@
     }
 
     function editCurrentShop() {
+        if (currentShop === "টাকা পাবো") {
+            alert("'টাকা পাবো' দোকানের নাম পরিবর্তন করা যাবে না!");
+            return;
+        }
         let newName = prompt("দোকানের নতুন নাম লিখুন:", currentShop);
         if (newName) {
             newName = newName.trim();
             if (!newName) return;
             if (newName === currentShop) return;
+            if (newName === "টাকা পাবো") {
+                alert("এই নামটি ব্যবহার করা নিষেধ!");
+                return;
+            }
             
             const shops = getUserShops();
             if (shops[newName]) {
@@ -538,18 +579,22 @@
     }
 
     function deleteCurrentShop() {
+        if (currentShop === "টাকা পাবো") {
+            alert("'টাকা পাবো' দোকানটি ডিলিট করা যাবে না!");
+            return;
+        }
         const shops = getUserShops();
         const shopKeys = Object.keys(shops);
         
-        if (shopKeys.length <= 1) {
-            alert("কমপক্ষে একটি দোকান থাকা বাধ্যতামূলক, তাই এটি ডিলিট করা যাবে না!");
+        if (shopKeys.length <= 2) { // Shop 1 এবং 'টাকা পাবো' বাদ দিয়ে চেক
+            alert("কমপক্ষে একটি সাধারণ দোকান থাকা বাধ্যতামূলক, তাই এটি ডিলিট করা যাবে না!");
             return;
         }
 
         if (confirm(`আপনি কি সত্যিই '${currentShop}' দোকানটি এবং এর সমস্ত হিসাব মুছে ফেলতে চান?`)) {
             delete shops[currentShop];
             const remainingKeys = Object.keys(shops);
-            currentShop = remainingKeys[0];
+            currentShop = remainingKeys[0] === "টাকা পাবো" ? remainingKeys[1] : remainingKeys[0];
             
             saveUserData();
             renderShopSelector();
@@ -573,6 +618,9 @@
             container.innerHTML = '<p style="text-align:center; color:#888;">কোনো দোকান নেই।</p>';
         } else {
             shopKeys.forEach(shopName => {
+                // "টাকা পাবো" দোকানটি ওভারভিউ মোডাল থেকে বাদ দেওয়া হলো
+                if (shopName === "টাকা পাবো") return;
+
                 const txns = shops[shopName].transactions || [];
                 let shopIncome = 0;
                 let shopExpense = 0;
@@ -878,11 +926,9 @@
         }
     }
 
-    // iPhone-Friendly Backup Function
     function backupData() {
         const dataJson = JSON.stringify(allUsersData);
         
-        // প্রথমে সরাসরি ফাইল ডাউনলোড করার চেষ্টা করবে
         try {
             const blob = new Blob([dataJson], { type: "application/json" });
             const url = URL.createObjectURL(blob);
@@ -894,11 +940,9 @@
             downloadAnchor.remove();
             URL.revokeObjectURL(url);
         } catch (e) {
-            // যদি সাফারি ব্লক করে, তবে কোড পপআপ উইন্ডো দেখাবে
             console.log("Direct download failed, showing text modal.");
         }
 
-        // সব ডিভাইসের জন্য ফেইলসেফ হিসেবে টেক্সট পপআপ দেখাবে
         document.getElementById('backup-text-area').value = dataJson;
         document.getElementById('backupModal').style.display = 'flex';
     }
