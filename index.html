@@ -1,304 +1,359 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- মোবাইল ভিউপোর্ট জুম লক (user-scalable=no & touch-action) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Shop Expense Tracker with Login</title>
-    <!-- iPhone Full Screen / App Mode Settings -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Shop Tracker">
-
-<!-- Standard Web App Support -->
-<meta name="mobile-web-app-capable" content="yes">
-    <!-- Tailwind CSS for sleek layout & design -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            font-family: 'Hind Siliguri', Arial, sans-serif;
-            box-sizing: border-box;
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            font-family: Arial, sans-serif; 
+            /* দুই আঙুলে জুম বা পিঞ্চ জুম বন্ধ কিন্তু স্বাভাবিক স্ক্রোল চালু */
+            touch-action: pan-x pan-y; 
         }
-        body {
-            background-color: #f4f7f6;
+        body { 
+            background-color: #f4f7f6; 
+            padding: 15px; 
+            color: #333; 
+            /* আইফোনে জুম হওয়া ঠেকাতে */
+            -webkit-text-size-adjust: 100%; 
+        }
+        .container { max-width: 500px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h2 { text-align: center; margin-bottom: 15px; color: #2c3e50; }
+        
+        /* Auth Screen Styles */
+        #auth-container { max-width: 400px; margin: 50px auto; background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; }
+        #auth-container input { width: 100%; margin-bottom: 12px; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 6px; }
+        #auth-container button { width: 100%; padding: 12px; background: #27ae60; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 15px; }
+        #auth-container button:hover { background: #219150; }
+        .toggle-auth { margin-top: 15px; font-size: 13px; color: #2980b9; cursor: pointer; text-decoration: underline; }
+
+        /* App Header & Logout */
+        .app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .logout-btn { background: #e74c3c !important; font-size: 11px !important; padding: 5px 10px !important; width: auto !important; }
+
+        /* Shop Selector Bar */
+        .shop-selector-section {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 10px;
+            background: #eef2f5;
+            padding: 10px;
+            border-radius: 8px;
+            align-items: center;
+        }
+        .shop-selector-section select { flex: 1; padding: 8px; font-weight: bold; color: #2c3e50; border-radius: 6px; border: 1px solid #ccc; font-size: 14px; }
+        .shop-selector-section button { padding: 8px 8px; font-size: 11px; border-radius: 6px; border: none; color: white; cursor: pointer; font-weight: bold; }
+        .btn-add { background: #2980b9; }
+        .btn-edit { background: #f39c12; }
+        .btn-delete { background: #e74c3c; }
+
+        /* All Shops Total Overview Button */
+        .all-shops-overview-btn {
+            width: 100%;
+            background: #8e44ad;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 15px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: background 0.2s;
+        }
+        .all-shops-overview-btn:hover { background: #732d91; }
+
+        /* Grand Total Box inside Modal */
+        .grand-total-box {
+            background: #2c3e50;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .grand-total-box h4 { font-size: 14px; margin-bottom: 8px; color: #ecf0f1; border-bottom: 1px solid #415b76; padding-bottom: 4px; }
+        .grand-total-flex { display: flex; justify-content: space-between; font-size: 13px; }
+
+        /* Summary Header with Google Keep Notebook Icon */
+        .summary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .summary-title { font-size: 14px; font-weight: bold; color: #7f8c8d; }
+        
+        .notebook-icon-btn {
+            background: #fbc02d;
             color: #333;
-            min-height: 100vh;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            transition: background 0.2s;
         }
-        /* Custom scrollbar styling */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
+        .notebook-icon-btn:hover { background: #f9a825; }
+
+        .summary { display: flex; justify-content: space-between; margin-bottom: 20px; background: #eef2f5; padding: 12px; border-radius: 8px; }
+        .summary div { text-align: center; flex: 1; }
+        .summary h3 { font-size: 13px; color: #7f8c8d; }
+        .summary p { font-size: 16px; font-weight: bold; margin-top: 4px; }
+        .income { color: #27ae60; }
+        .expense { color: #c0392b; }
+        .balance { color: #2980b9; }
+
+        form { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        /* Mobile Input Auto-Zoom Preventer: Font-size at least 16px for input */
+        input, select, textarea, button { padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 6px; }
+        button { background: #27ae60; color: white; border: none; cursor: pointer; font-weight: bold; }
+        button:hover { background: #219150; }
+
+        .btn-group { display: flex; gap: 10px; margin-bottom: 15px; }
+        .btn-group button { flex: 1; background: #34495e; font-size: 12px; padding: 10px; border-radius: 6px; cursor: pointer; color: white; font-weight: bold; border: none; }
+        .btn-gdrive { background: #0f9d58 !important; display: flex; align-items: center; justify-content: center; gap: 5px; }
+
+        .filter-section { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; background: #fafafa; padding: 10px; border-radius: 6px; border: 1px solid #eee; }
+        .filter-section label { font-size: 13px; font-weight: bold; color: #555; }
+        .filter-section input { padding: 5px; font-size: 14px; }
+
+        .section-title { margin-top: 25px; margin-bottom: 10px; font-size: 16px; color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 5px; }
+
         .daily-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
             border-radius: 8px;
             padding: 12px;
             margin-bottom: 10px;
-            transition: all 0.2s ease;
         }
-        .daily-row:hover {
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-        .daily-row.income-row { border-left: 5px solid #22c55e; }
-        .daily-row.expense-row { border-left: 5px solid #ef4444; }
+
+        .daily-row.income-row { border-left: 5px solid #27ae60; }
+        .daily-row.expense-row { border-left: 5px solid #c0392b; }
+
+        .date-text { font-weight: bold; color: #2c3e50; font-size: 14px; }
+        .titles-text { font-size: 13px; color: #555; margin-top: 3px; }
         
+        .action-btns { display: flex; align-items: center; gap: 6px; }
+        .total-amount { font-size: 15px; font-weight: bold; margin-right: 5px; }
+        .edit-btn { background: #f39c12; color: white; border: none; padding: 5px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; }
+        .delete-all-btn { background: #e74c3c; color: white; border: none; padding: 5px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; }
+
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
             z-index: 1000;
             left: 0; top: 0; width: 100%; height: 100%;
             background-color: rgba(0,0,0,0.5);
-            backdrop-filter: blur(2px);
             justify-content: center; align-items: center;
         }
         .modal-content {
-            background: #fff; 
-            padding: 20px; 
-            border-radius: 12px;
-            width: 92%; 
-            max-width: 480px; 
-            max-height: 85vh; 
-            overflow-y: auto;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            background: #fff; padding: 20px; border-radius: 12px;
+            width: 90%; max-width: 450px; max-height: 85vh; overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
         }
-        .keep-note-card {
-            background: #fef08a;
-            border: 1px solid #fde047;
+        .modal-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 8px;
+        }
+        .close-modal { background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+        
+        .keep-input-box {
+            background: #f1f3f4;
+            border: 1px solid #dadce0;
             border-radius: 8px;
             padding: 12px;
+            margin-bottom: 15px;
+        }
+        .keep-note-card {
+            background: #fff9c4;
+            border: 1px solid #fbc02d;
+            border-radius: 8px;
+            padding: 10px;
             margin-bottom: 10px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
+        .keep-note-date { font-size: 11px; color: #5f6368; font-weight: bold; margin-bottom: 4px; }
+        .keep-note-text { font-size: 13px; color: #202124; white-space: pre-wrap; margin-bottom: 8px; }
+
+        /* Shop Total Card inside Modal */
+        .shop-total-item {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+        .shop-total-name { font-weight: bold; font-size: 15px; color: #2c3e50; margin-bottom: 6px; }
+        .shop-total-details { display: flex; justify-content: space-between; font-size: 12px; gap: 5px; }
     </style>
 </head>
-<body class="p-3 sm:p-6 flex flex-col justify-between min-h-screen">
+<body>
 
-    <!-- Toast Notification Message Container -->
-    <div id="toast" class="fixed top-5 right-5 z-50 transform transition-all duration-300 translate-y-[-100px] opacity-0 pointer-events-none bg-slate-800 text-white px-4 py-3 rounded-lg shadow-xl text-sm font-medium flex items-center gap-2">
-        <span id="toast-icon">ℹ️</span>
-        <span id="toast-message">Notification message</span>
-    </div>
-
-    <!-- AUTHENTICATION SCREEN (Sign Up / Login) -->
-    <div id="auth-container" class="max-w-md w-full mx-auto my-auto bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-100 text-center">
-        <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
-            🔐
-        </div>
-        <h2 id="auth-title" class="text-2xl font-bold text-slate-800 mb-2">Shop Tracker Login</h2>
-        <p class="text-slate-500 text-sm mb-6">দোকানের সমস্ত হিসাব-নিকাশ রাখুন ডিজিটাল মাধ্যমে</p>
-
-        <form id="auth-form" onsubmit="handleAuth(event)" class="flex flex-col gap-3">
-            <div class="text-left">
-                <label class="text-xs font-semibold text-slate-600 block mb-1">মোবাইল নম্বর</label>
-                <input type="text" id="auth-phone" placeholder="Mobile Number (e.g. 017xxxxxxxx)" required class="w-full px-4 py-3 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none transition-all" />
-            </div>
-
-            <div class="text-left">
-                <label class="text-xs font-semibold text-slate-600 block mb-1">পাসওয়ার্ড</label>
-                <input type="password" id="auth-pass" placeholder="Password" required class="w-full px-4 py-3 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none transition-all" />
-            </div>
-
-            <button type="submit" id="auth-btn" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold text-base transition-colors shadow-md mt-2">
-                Login
-            </button>
+    <!-- AUTHENTICATION SCREEN -->
+    <div id="auth-container">
+        <h2 id="auth-title">🔐 Shop Tracker Login</h2>
+        <form id="auth-form" onsubmit="handleAuth(event)">
+            <input type="text" id="auth-phone" placeholder="Mobile Number (e.g. 017xxxxxxxx)" required />
+            <input type="password" id="auth-pass" placeholder="Password" required />
+            <button type="submit" id="auth-btn">Login</button>
         </form>
-
-        <div class="mt-6 text-sm text-blue-600 hover:text-blue-800 cursor-pointer underline transition-colors" onclick="toggleAuthMode()" id="toggle-text">
-            New user? Create an account (Sign Up)
-        </div>
+        <div class="toggle-auth" onclick="toggleAuthMode()" id="toggle-text">New user? Create an account (Sign Up)</div>
     </div>
 
     <!-- MAIN APP SCREEN -->
-    <div class="max-w-xl w-full mx-auto bg-white p-4 sm:p-6 rounded-2xl shadow-lg border border-slate-100" id="app-container" style="display: none;">
-        
-        <!-- App Header & User Profile -->
-        <div class="flex justify-between items-center pb-4 mb-4 border-b border-slate-100">
-            <div>
-                <h2 class="font-bold text-lg text-slate-800 flex items-center gap-2" id="welcome-user">
-                    <span>🏬</span> Shop Tracker
-                </h2>
-            </div>
-            <button type="button" onclick="logout()" class="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1">
-                <span>🚪</span> Logout
-            </button>
+    <div class="container" id="app-container" style="display: none;">
+        <div class="app-header">
+            <h2 style="margin:0; font-size: 18px;" id="welcome-user">Shop Tracker</h2>
+            <button type="button" class="logout-btn" onclick="logout()">Logout</button>
         </div>
 
         <!-- Shop Selector Bar -->
-        <div class="flex flex-wrap sm:flex-nowrap gap-2 mb-5 bg-slate-100 p-2.5 rounded-xl items-center">
-            <select id="shop-selector" onchange="changeActiveShop()" class="flex-1 bg-white border border-slate-300 font-bold text-slate-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+        <div class="shop-selector-section">
+            <select id="shop-selector" onchange="changeActiveShop()">
                 <!-- Shops loaded dynamically -->
             </select>
-            <div class="flex gap-1 w-full sm:w-auto justify-end">
-                <button type="button" onclick="editCurrentShop()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs px-2.5 py-2 rounded-lg font-semibold transition-colors">Edit</button>
-                <button type="button" onclick="deleteCurrentShop()" class="bg-red-500 hover:bg-red-600 text-white text-xs px-2.5 py-2 rounded-lg font-semibold transition-colors">Delete</button>
-                <button type="button" onclick="addNewShop()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-2 rounded-lg font-bold transition-colors flex items-center gap-1">+ Add Shop</button>
-            </div>
+            <button type="button" class="btn-edit" onclick="editCurrentShop()">Edit</button>
+            <button type="button" class="btn-delete" onclick="deleteCurrentShop()">Delete</button>
+            <button type="button" class="btn-add" onclick="addNewShop()">+ Add</button>
         </div>
+
+        <!-- All Shops Total Overview Button -->
+        <button type="button" class="all-shops-overview-btn" onclick="openAllShopsModal()">
+            📊 সব দোকানের মোট হিসাব একসাথে দেখুন
+        </button>
 
         <!-- Summary Header with Notes Icon -->
-        <div class="flex justify-between items-center mb-2">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-500" id="current-shop-title">Financial Summary</span>
-            <button type="button" onclick="openKeepModal()" class="bg-amber-400 hover:bg-amber-500 text-slate-900 border border-amber-300 px-3 py-1.5 rounded-full font-bold text-xs flex items-center gap-1.5 shadow-sm transition-all">
-                <span>💡</span> Shop Notes
-            </button>
+        <div class="summary-header">
+            <span class="summary-title" id="current-shop-title">Financial Summary</span>
+            <button type="button" class="notebook-icon-btn" onclick="openKeepModal()">💡 Notes</button>
         </div>
 
-        <!-- Financial Summary Cards Box -->
-        <div class="grid grid-cols-3 gap-2 sm:gap-3 mb-6 bg-slate-50 p-3 sm:p-4 rounded-xl border border-slate-200/60 text-center">
-            <div class="bg-white p-2.5 rounded-lg border border-slate-100 shadow-sm">
-                <h3 class="text-xs text-slate-500 font-medium">Income</h3>
-                <p id="total-income" class="text-sm sm:text-lg font-bold text-emerald-600 mt-1">৳0.00</p>
+        <!-- Financial Summary Box -->
+        <div class="summary">
+            <div>
+                <h3>Income</h3>
+                <p id="total-income" class="income">৳0.00</p>
             </div>
-            <div class="bg-white p-2.5 rounded-lg border border-slate-100 shadow-sm">
-                <h3 class="text-xs text-slate-500 font-medium">Expense</h3>
-                <p id="total-expense" class="text-sm sm:text-lg font-bold text-red-600 mt-1">৳0.00</p>
+            <div>
+                <h3>Expense</h3>
+                <p id="total-expense" class="expense">৳0.00</p>
             </div>
-            <div class="bg-white p-2.5 rounded-lg border border-slate-100 shadow-sm">
-                <h3 class="text-xs text-slate-500 font-medium">Net Balance</h3>
-                <p id="net-balance" class="text-sm sm:text-lg font-bold text-blue-600 mt-1">৳0.00</p>
+            <div>
+                <h3>Balance</h3>
+                <p id="net-balance" class="balance">৳0.00</p>
             </div>
         </div>
 
         <!-- Add Transaction Form -->
-        <form id="tracker-form" class="flex flex-col gap-3 mb-6 bg-slate-50/50 p-4 rounded-xl border border-slate-200">
-            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Add New Entry</h4>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <input type="text" id="title" placeholder="Description (e.g. Sales, Rent)" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" />
-                <input type="number" id="amount" placeholder="Amount (Taka)" step="any" min="0.01" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" />
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <input type="date" id="entry-date" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none text-slate-700" />
-                <select id="type" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none text-slate-700 bg-white">
-                    <option value="expense">Expense (খরচ)</option>
-                    <option value="income">Income (জমা/আয়)</option>
-                </select>
-            </div>
-
-            <button type="submit" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold text-sm transition-colors shadow-sm mt-1">
-                + Add Transaction
-            </button>
+        <form id="tracker-form">
+            <input type="text" id="title" placeholder="Description (e.g. Sales, Rent)" required />
+            <input type="number" id="amount" placeholder="Amount (Taka)" step="any" min="0.01" required />
+            <input type="date" id="entry-date" required />
+            <select id="type">
+                <option value="expense">Expense</option>
+                <option value="income">Income</option>
+            </select>
+            <button type="submit">Add Transaction</button>
         </form>
 
-        <!-- Data Backup & Restore Options -->
-        <div class="grid grid-cols-2 gap-3 mb-5">
-            <button type="button" onclick="backupData()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs py-2.5 px-3 rounded-lg flex items-center justify-center gap-1.5 transition-colors shadow-sm">
-                <span>☁️</span> Backup File
-            </button>
-            <button type="button" onclick="document.getElementById('importFile').click()" class="bg-slate-700 hover:bg-slate-800 text-white font-semibold text-xs py-2.5 px-3 rounded-lg flex items-center justify-center gap-1.5 transition-colors shadow-sm">
-                <span>📂</span> Restore File
-            </button>
+        <!-- Backup & Restore Buttons -->
+        <div class="btn-group">
+            <button type="button" class="btn-gdrive" onclick="backupData()">☁️ Backup File</button>
+            <button type="button" onclick="document.getElementById('importFile').click()">📂 Restore File</button>
             <input type="file" id="importFile" style="display:none" onchange="importData(event)" accept=".json">
         </div>
 
         <!-- Calendar Filter Section -->
-        <div class="flex items-center justify-between gap-2 mb-5 bg-slate-100 p-3 rounded-lg border border-slate-200">
-            <div class="flex items-center gap-2 flex-1">
-                <label for="filter-date" class="text-xs font-bold text-slate-600 whitespace-nowrap">Filter Date:</label>
-                <input type="date" id="filter-date" onchange="updateUI()" class="bg-white border border-slate-300 rounded px-2 py-1 text-xs text-slate-700 outline-none flex-1 max-w-[180px]" />
+        <div class="filter-section">
+            <label for="filter-date">Filter by Date:</label>
+            <input type="date" id="filter-date" onchange="updateUI()" />
+            <button type="button" onclick="clearFilter()" style="padding: 5px 10px; font-size: 12px; background: #7f8c8d;">Show All</button>
+        </div>
+
+        <!-- History Container -->
+        <div class="section-title">Transaction History</div>
+        <div id="history-container" style="margin-top: 10px;"></div>
+    </div>
+
+    <!-- All Shops Overview Modal -->
+    <div id="allShopsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📊 সকল দোকানের মোট হিসাব</h3>
+                <button type="button" class="close-modal" onclick="closeAllShopsModal()">X</button>
             </div>
-            <button type="button" onclick="clearFilter()" class="px-3 py-1 text-xs bg-slate-500 hover:bg-slate-600 text-white font-medium rounded transition-colors">
-                Show All
-            </button>
-        </div>
+            
+            <!-- Grand Total Summary Box -->
+            <div class="grand-total-box">
+                <h4>✨ সর্বমোট হিসাব (সকল দোকান মিলিয়ে)</h4>
+                <div class="grand-total-flex">
+                    <span style="color: #2ecc71;">Income: <strong id="modal-grand-income">৳0.00</strong></span>
+                    <span style="color: #e74c3c;">Expense: <strong id="modal-grand-expense">৳0.00</strong></span>
+                    <span style="color: #3498db;">Balance: <strong id="modal-grand-balance">৳0.00</strong></span>
+                </div>
+            </div>
 
-        <!-- Transaction History -->
-        <div class="text-sm font-bold text-slate-800 pb-2 mb-3 border-b border-slate-200 flex justify-between items-center">
-            <span>Transaction History</span>
-            <span id="history-count" class="text-xs font-normal text-slate-500">0 records</span>
+            <!-- Individual Shops Breakdown Container -->
+            <div id="all-shops-list-container"></div>
         </div>
-        <div id="history-container" class="space-y-2">
-            <!-- Dynamic list of transaction groups -->
-        </div>
-
     </div>
 
     <!-- Google Keep Style Notes Modal -->
     <div id="keepModal" class="modal">
         <div class="modal-content">
-            <div class="flex justify-between items-center pb-3 mb-4 border-b border-slate-200">
-                <h3 id="modal-shop-note-title" class="font-bold text-slate-800 text-base flex items-center gap-1.5">
-                    💡 Shop Notes
-                </h3>
-                <button type="button" onclick="closeKeepModal()" class="bg-slate-200 hover:bg-red-500 hover:text-white text-slate-600 font-bold rounded-full w-7 h-7 flex items-center justify-center text-xs transition-colors">
-                    ✕
-                </button>
+            <div class="modal-header">
+                <h3 id="modal-shop-note-title">💡 Notes</h3>
+                <button type="button" class="close-modal" onclick="closeKeepModal()">X</button>
             </div>
-            
-            <form id="keep-note-form" class="mb-4">
-                <div class="bg-slate-50 border border-slate-300 rounded-xl p-3 focus-within:ring-2 focus-within:ring-amber-400">
-                    <textarea id="keep-content" placeholder="Take a note for this shop..." rows="3" class="w-full border-none bg-transparent outline-none resize-none text-sm text-slate-800 placeholder-slate-400" required></textarea>
-                    <div class="flex justify-between items-center mt-2 pt-2 border-t border-slate-200/60">
-                        <input type="date" id="keep-date" class="bg-white border border-slate-300 rounded px-2 py-1 text-xs text-slate-700" required />
-                        <button type="submit" id="keep-submit-btn" class="px-4 py-1.5 text-xs font-bold bg-amber-500 hover:bg-amber-600 text-white rounded-lg transition-colors shadow-sm">
-                            Save Note
-                        </button>
+            <form id="keep-note-form" style="margin-bottom: 15px;">
+                <div class="keep-input-box">
+                    <textarea id="keep-content" placeholder="Take a note..." rows="3" style="width:100%; border:none; background:transparent; outline:none; resize:none;" required></textarea>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+                        <input type="date" id="keep-date" style="padding:4px; font-size:12px;" required />
+                        <button type="submit" id="keep-submit-btn" style="padding:6px 12px; font-size:12px; background:#f57c00;">Done</button>
                     </div>
                 </div>
             </form>
-
-            <div id="keep-notes-container" class="space-y-3 max-h-[300px] overflow-y-auto pr-1">
-                <!-- Dynamically rendered notes -->
-            </div>
+            <div id="keep-notes-container"></div>
         </div>
     </div>
 
-    <!-- Edit Modal Box for Daily Grouped Transactions -->
+    <!-- Edit Modal Box for Transactions -->
     <div id="editModal" class="modal">
         <div class="modal-content">
-            <div class="flex justify-between items-center pb-3 mb-4 border-b border-slate-200">
-                <h3 id="modal-date-title" class="font-bold text-slate-800 text-sm">Edit Transactions</h3>
-                <button type="button" onclick="closeEditModal()" class="bg-slate-200 hover:bg-red-500 hover:text-white text-slate-600 font-bold rounded-full w-7 h-7 flex items-center justify-center text-xs transition-colors">
-                    ✕
-                </button>
+            <div class="modal-header">
+                <h3 id="modal-date-title">Edit Transactions</h3>
+                <button type="button" class="close-modal" onclick="closeEditModal()">X</button>
             </div>
-            <div id="modal-items-container" class="space-y-3 max-h-[350px] overflow-y-auto pr-1">
-                <!-- Dynamically populated transaction edit items -->
-            </div>
+            <div id="modal-items-container"></div>
         </div>
     </div>
 
-    <!-- Footer Credit -->
-    <footer class="text-center text-slate-400 text-xs mt-6 mb-2">
-        Shop Expense Tracker &copy; Digital Ledger Application
-    </footer>
-
 <script>
-    // Helper function to show modern toast notifications instead of alerts
-    function showToast(message, type = 'info') {
-        const toast = document.getElementById('toast');
-        const toastMsg = document.getElementById('toast-message');
-        const toastIcon = document.getElementById('toast-icon');
+    // Safari/iOS-এ দুই আঙুলে জুম পুরোপুরি স্ক্রিপ্ট লেভেলে ব্লক করার জন্য:
+    document.addEventListener('gesturestart', function (e) {
+        e.preventDefault();
+    });
 
-        toastMsg.innerText = message;
-        if (type === 'error') toastIcon.innerText = '⚠️';
-        else if (type === 'success') toastIcon.innerText = '✅';
-        else toastIcon.innerText = 'ℹ️';
-
-        toast.classList.remove('translate-y-[-100px]', 'opacity-0', 'pointer-events-none');
-        toast.classList.add('translate-y-0', 'opacity-100');
-
-        setTimeout(() => {
-            toast.classList.remove('translate-y-0', 'opacity-100');
-            toast.classList.add('translate-y-[-100px]', 'opacity-0', 'pointer-events-none');
-        }, 3000);
-    }
-
-    // Helper: Formats current date to YYYY-MM-DD
     function getTodayDate() {
         const now = new Date();
         const year = now.getFullYear();
@@ -307,7 +362,6 @@
         return `${year}-${month}-${day}`;
     }
 
-    // Set initial date inputs to today
     document.getElementById('entry-date').value = getTodayDate();
     document.getElementById('keep-date').value = getTodayDate();
 
@@ -317,12 +371,13 @@
     let currentShop = "Shop 1";
     let editingNoteId = null;
 
-    // Verify session and view initialization
+    checkLoginState();
+
     function checkLoginState() {
         if (currentUser && allUsersData[currentUser]) {
             document.getElementById('auth-container').style.display = 'none';
             document.getElementById('app-container').style.display = 'block';
-            document.getElementById('welcome-user').innerHTML = `<span>🏬</span> ${currentUser}`;
+            document.getElementById('welcome-user').innerText = `User: ${currentUser}`;
             
             let shops = getUserShops();
             const shopKeys = Object.keys(shops);
@@ -337,7 +392,6 @@
         }
     }
 
-    // Toggle between login and sign up mode
     function toggleAuthMode() {
         isSignUpMode = !isSignUpMode;
         document.getElementById('auth-title').innerText = isSignUpMode ? "📝 Create New Account" : "🔐 Shop Tracker Login";
@@ -345,20 +399,16 @@
         document.getElementById('toggle-text').innerText = isSignUpMode ? "Already have an account? Login" : "New user? Create an account (Sign Up)";
     }
 
-    // Authentication form handler
     function handleAuth(e) {
         e.preventDefault();
         const phone = document.getElementById('auth-phone').value.trim();
         const pass = document.getElementById('auth-pass').value.trim();
-        
-        if (!phone || !pass) {
-            showToast("দয়া করে মোবাইল নম্বর এবং পাসওয়ার্ড প্রদান করুন", "error");
-            return;
-        }
+
+        if (!phone || !pass) return;
 
         if (isSignUpMode) {
             if (allUsersData[phone]) {
-                showToast("এই নম্বর দিয়ে আগেই অ্যাকাউন্ট খোলা রয়েছে! লগইন করুন।", "error");
+                alert("এই মোবাইল নম্বর দিয়ে আগেই অ্যাকাউন্ট খোলা হয়েছে! দয়া করে লগইন করুন।");
                 return;
             }
             allUsersData[phone] = {
@@ -366,31 +416,27 @@
                 shops: { "Shop 1": { transactions: [], notes: [] } }
             };
             localStorage.setItem('allUsersData', JSON.stringify(allUsersData));
-            showToast("অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে! এখন লগইন করুন।", "success");
+            alert("সফলভাবে অ্যাকাউন্ট তৈরি হয়েছে! এখন লগইন করুন।");
             toggleAuthMode();
             document.getElementById('auth-form').reset();
         } else {
             if (!allUsersData[phone] || allUsersData[phone].password !== pass) {
-                showToast("ভুল মোবাইল নম্বর অথবা পাসওয়ার্ড!", "error");
+                alert("ভুল মোবাইল নম্বর অথবা পাসওয়ার্ড!");
                 return;
             }
             currentUser = phone;
             localStorage.setItem('activeUser', currentUser);
             document.getElementById('auth-form').reset();
             checkLoginState();
-            showToast("সফলভাবে লগইন হয়েছে!", "success");
         }
     }
 
-    // Logout session handler
     function logout() {
         localStorage.removeItem('activeUser');
         currentUser = null;
         checkLoginState();
-        showToast("লগআউট করা হয়েছে");
     }
 
-    // Returns active user's shop dataset safely
     function getUserShops() {
         if (!allUsersData[currentUser]) {
             allUsersData[currentUser] = { password: "", shops: { "Shop 1": { transactions: [], notes: [] } } };
@@ -401,27 +447,24 @@
         return allUsersData[currentUser].shops;
     }
 
-    // Sync to LocalStorage
     function saveUserData() {
         localStorage.setItem('allUsersData', JSON.stringify(allUsersData));
     }
 
-    // Populate dropdown with active user's shops
     function renderShopSelector() {
         const selector = document.getElementById('shop-selector');
         selector.innerHTML = '';
         
         const shops = getUserShops();
-        let shopKeys = Object.keys(shops);
+        const shopKeys = Object.keys(shops);
         
         if (shopKeys.length === 0) {
             shops["Shop 1"] = { transactions: [], notes: [] };
             currentShop = "Shop 1";
-            shopKeys = ["Shop 1"];
         }
 
         if (!shops[currentShop]) {
-            currentShop = shopKeys[0];
+            currentShop = Object.keys(shops)[0];
         }
 
         shopKeys.forEach(shopName => {
@@ -435,7 +478,6 @@
         document.getElementById('current-shop-title').innerText = `${currentShop} Summary`;
     }
 
-    // Change currently selected shop
     function changeActiveShop() {
         const selector = document.getElementById('shop-selector');
         if (selector.value) {
@@ -446,7 +488,6 @@
         }
     }
 
-    // Create a new shop
     function addNewShop() {
         let shopName = prompt("নতুন দোকানের নাম লিখুন:");
         if (shopName) {
@@ -455,7 +496,7 @@
             
             const shops = getUserShops();
             if (shops[shopName]) {
-                showToast("এই নামের দোকান আগেই আছে!", "error");
+                alert("এই নামের দোকান আগেই আছে!");
                 return;
             }
             
@@ -464,11 +505,9 @@
             saveUserData();
             renderShopSelector();
             updateUI();
-            showToast(`'${shopName}' তৈরি করা হয়েছে`, "success");
         }
     }
 
-    // Rename active shop
     function editCurrentShop() {
         let newName = prompt("দোকানের নতুন নাম লিখুন:", currentShop);
         if (newName) {
@@ -478,26 +517,27 @@
             
             const shops = getUserShops();
             if (shops[newName]) {
-                showToast("এই নামের দোকান ইতিমধ্যে রয়েছে!", "error");
+                alert("এই নামের দোকান ইতিমধ্যে রয়েছে!");
                 return;
             }
+
             shops[newName] = shops[currentShop];
             delete shops[currentShop];
             currentShop = newName;
+
             saveUserData();
             renderShopSelector();
             updateUI();
-            showToast("দোকানের নাম পরিবর্তন করা হয়েছে!", "success");
+            alert("দোকানের নাম সফলভাবে পরিবর্তন হয়েছে!");
         }
     }
 
-    // Delete active shop
     function deleteCurrentShop() {
         const shops = getUserShops();
         const shopKeys = Object.keys(shops);
         
         if (shopKeys.length <= 1) {
-            showToast("কমপক্ষে একটি দোকান থাকা বাধ্যতামূলক!", "error");
+            alert("কমপক্ষে একটি দোকান থাকা বাধ্যতামূলক, তাই এটি ডিলিট করা যাবে না!");
             return;
         }
 
@@ -509,15 +549,72 @@
             saveUserData();
             renderShopSelector();
             updateUI();
-            showToast("দোকানটি মুছে ফেলা হয়েছে!", "success");
+            alert("দোকানটি সফলভাবে ডিলিট করা হয়েছে!");
         }
     }
 
-    // Main UI update engine: updates transaction history & dashboard metrics
+    function openAllShopsModal() {
+        const modal = document.getElementById('allShopsModal');
+        const container = document.getElementById('all-shops-list-container');
+        container.innerHTML = '';
+
+        const shops = getUserShops();
+        const shopKeys = Object.keys(shops);
+
+        let grandIncome = 0;
+        let grandExpense = 0;
+
+        if (shopKeys.length === 0) {
+            container.innerHTML = '<p style="text-align:center; color:#888;">কোনো দোকান নেই।</p>';
+        } else {
+            shopKeys.forEach(shopName => {
+                const txns = shops[shopName].transactions || [];
+                let shopIncome = 0;
+                let shopExpense = 0;
+
+                txns.forEach(t => {
+                    const amt = parseFloat(t.amount) || 0;
+                    if (t.type === 'income') {
+                        shopIncome += amt;
+                    } else if (t.type === 'expense') {
+                        shopExpense += amt;
+                    }
+                });
+
+                grandIncome += shopIncome;
+                grandExpense += shopExpense;
+                const shopBalance = shopIncome - shopExpense;
+
+                const card = document.createElement('div');
+                card.className = 'shop-total-item';
+                card.innerHTML = `
+                    <div class="shop-total-name">🏪 ${shopName}</div>
+                    <div class="shop-total-details">
+                        <span style="color: #27ae60;">Income: ৳${shopIncome.toFixed(2)}</span>
+                        <span style="color: #c0392b;">Expense: ৳${shopExpense.toFixed(2)}</span>
+                        <span style="color: #2980b9; font-weight: bold;">Balance: ৳${shopBalance.toFixed(2)}</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        document.getElementById('modal-grand-income').innerText = `৳${grandIncome.toFixed(2)}`;
+        document.getElementById('modal-grand-expense').innerText = `৳${grandExpense.toFixed(2)}`;
+        document.getElementById('modal-grand-balance').innerText = `৳${(grandIncome - grandExpense).toFixed(2)}`;
+
+        modal.style.display = 'flex';
+    }
+
+    function closeAllShopsModal() {
+        document.getElementById('allShopsModal').style.display = 'none';
+    }
+
     function updateUI() {
         renderShopSelector();
         const historyContainer = document.getElementById('history-container');
         historyContainer.innerHTML = '';
+
         const filterDate = document.getElementById('filter-date').value;
         const shops = getUserShops();
         
@@ -530,12 +627,14 @@
         }
         
         const shopTransactions = shops[currentShop].transactions || [];
+
         let totalIncomeSum = 0;
         let totalExpenseSum = 0;
         const grouped = {};
 
         shopTransactions.forEach((item) => {
             const parsedAmount = parseFloat(item.amount) || 0;
+
             if (item.type === 'income') totalIncomeSum += parsedAmount;
             else totalExpenseSum += parsedAmount;
 
@@ -551,58 +650,37 @@
         });
 
         const sortedKeys = Object.keys(grouped).sort((a, b) => new Date(b.split('_')[0]) - new Date(a.split('_')[0]));
-        
-        document.getElementById('history-count').innerText = `${sortedKeys.length} items`;
 
-        if (sortedKeys.length === 0) {
-            historyContainer.innerHTML = `
-                <div class="text-center py-8 text-slate-400 bg-slate-50 rounded-xl border border-dashed border-slate-200">
-                    <p class="text-sm">কোনো লেনদেন পাওয়া যায়নি</p>
+        sortedKeys.forEach(key => {
+            const group = grouped[key];
+            const rowDiv = document.createElement('div');
+            const isIncome = group.type === 'income';
+            rowDiv.className = `daily-row ${isIncome ? 'income-row' : 'expense-row'}`;
+            
+            const sign = isIncome ? '+' : '-';
+            const amountColor = isIncome ? '#27ae60' : '#c0392b';
+
+            rowDiv.innerHTML = `
+                <div>
+                    <div class="date-text">📅 ${group.date} (${isIncome ? 'Income' : 'Expense'})</div>
+                    <div class="titles-text">📝 ${group.titles.join(', ')}</div>
+                </div>
+                <div class="action-btns">
+                    <span class="total-amount" style="color: ${amountColor};">${sign}৳${group.totalAmount.toFixed(2)}</span>
+                    <button type="button" class="edit-btn" onclick="openEditModal('${group.date}', '${group.type}')">Edit</button>
+                    <button type="button" class="delete-all-btn" onclick="deleteGroup('${group.ids.join(",")}')">X</button>
                 </div>
             `;
-        } else {
-            sortedKeys.forEach(key => {
-                const group = grouped[key];
-                const rowDiv = document.createElement('div');
-                const isIncome = group.type === 'income';
-                rowDiv.className = `daily-row ${isIncome ? 'income-row' : 'expense-row'}`;
-                
-                const sign = isIncome ? '+' : '-';
-                const amountColor = isIncome ? 'text-emerald-600' : 'text-red-600';
-                
-                rowDiv.innerHTML = `
-                    <div>
-                        <div class="font-bold text-slate-800 text-xs sm:text-sm flex items-center gap-1.5">
-                            <span>📅 ${group.date}</span>
-                            <span class="text-[10px] px-1.5 py-0.5 rounded ${isIncome ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'} font-bold uppercase">${group.type}</span>
-                        </div>
-                        <div class="text-xs text-slate-500 mt-1">📝 ${group.titles.join(', ')}</div>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="font-bold text-sm sm:text-base ${amountColor} mr-1">${sign}৳${group.totalAmount.toFixed(2)}</span>
-                        <button type="button" class="bg-amber-500 hover:bg-amber-600 text-white px-2 py-1 rounded text-xs font-semibold transition-colors" onclick="openEditModal('${group.date}', '${group.type}')">Edit</button>
-                        <button type="button" class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-xs font-semibold transition-colors" onclick="deleteGroup('${group.ids.join(",")}')">✕</button>
-                    </div>
-                `;
-                historyContainer.appendChild(rowDiv);
-            });
-        }
+            historyContainer.appendChild(rowDiv);
+        });
 
         document.getElementById('total-income').innerText = `৳${totalIncomeSum.toFixed(2)}`;
         document.getElementById('total-expense').innerText = `৳${totalExpenseSum.toFixed(2)}`;
-        const net = totalIncomeSum - totalExpenseSum;
-        const netElem = document.getElementById('net-balance');
-        netElem.innerText = `৳${net.toFixed(2)}`;
-        if (net < 0) {
-            netElem.className = "text-sm sm:text-lg font-bold text-red-600 mt-1";
-        } else {
-            netElem.className = "text-sm sm:text-lg font-bold text-blue-600 mt-1";
-        }
+        document.getElementById('net-balance').innerText = `৳${(totalIncomeSum - totalExpenseSum).toFixed(2)}`;
 
         saveUserData();
     }
 
-    // Submit new transaction handler
     document.getElementById('tracker-form').addEventListener('submit', function(e) {
         e.preventDefault();
         const title = document.getElementById('title').value.trim();
@@ -612,7 +690,7 @@
 
         const numAmount = parseFloat(rawAmount);
         if (isNaN(numAmount) || numAmount <= 0) {
-            showToast('সঠিক টাকার পরিমাণ লিখুন!', 'error');
+            alert('সঠিক টাকার পরিমাণ লিখুন!');
             return;
         }
 
@@ -631,12 +709,25 @@
         document.getElementById('title').value = '';
         document.getElementById('amount').value = '';
         document.getElementById('entry-date').value = getTodayDate();
-        showToast('নতুন এনট্রি যুক্ত হয়েছে', 'success');
     });
 
-    // Google Keep Modal Control
+    function clearFilter() {
+        document.getElementById('filter-date').value = '';
+        updateUI();
+    }
+
+    function deleteGroup(idsString) {
+        if (!confirm("আপনি কি এই এন্ট্রিগুলো মুছে ফেলতে চান?")) return;
+        const idsToRemove = idsString.split(',');
+        const shops = getUserShops();
+        if (!shops[currentShop]) return;
+
+        shops[currentShop].transactions = shops[currentShop].transactions.filter(t => !idsToRemove.includes(t.id));
+        updateUI();
+    }
+
     function openKeepModal() {
-        document.getElementById('modal-shop-note-title').innerHTML = `💡 ${currentShop} Notes`;
+        document.getElementById('modal-shop-note-title').innerText = `💡 ${currentShop} Notes`;
         document.getElementById('keepModal').style.display = 'flex';
         renderKeepNotes();
     }
@@ -645,23 +736,20 @@
         document.getElementById('keepModal').style.display = 'none';
         editingNoteId = null;
         document.getElementById('keep-content').value = '';
-        document.getElementById('keep-submit-btn').innerText = 'Save Note';
+        document.getElementById('keep-submit-btn').innerText = 'Done';
         updateUI();
     }
 
-    // Add or update note logic
     document.getElementById('keep-note-form').addEventListener('submit', function(e) {
         e.preventDefault();
         const content = document.getElementById('keep-content').value.trim();
         const date = document.getElementById('keep-date').value;
 
         if (!content) return;
-
         const shops = getUserShops();
         if (!shops[currentShop]) {
             shops[currentShop] = { transactions: [], notes: [] };
         }
-
         let shopNotes = shops[currentShop].notes;
 
         if (editingNoteId) {
@@ -671,14 +759,12 @@
                 note.date = date;
             }
             editingNoteId = null;
-            document.getElementById('keep-submit-btn').innerText = 'Save Note';
-            showToast("নোট আপডেট করা হয়েছে", "success");
+            document.getElementById('keep-submit-btn').innerText = 'Done';
         } else {
             shopNotes.push({
                 id: Date.now().toString() + Math.random().toString(36).substring(2, 5),
                 content, date
             });
-            showToast("নতুন নোট যুক্ত হয়েছে", "success");
         }
 
         document.getElementById('keep-content').value = '';
@@ -687,21 +773,19 @@
         saveUserData();
     });
 
-    // Render list of notes for active shop
     function renderKeepNotes() {
         const container = document.getElementById('keep-notes-container');
         container.innerHTML = '';
-        const shops = getUserShops();
 
+        const shops = getUserShops();
         if (!shops[currentShop]) {
             shops[currentShop] = { transactions: [], notes: [] };
         }
-
         const shopNotes = shops[currentShop].notes || [];
         const sortedNotes = [...shopNotes].sort((a, b) => new Date(b.date) - new Date(a.date));
-
+        
         if (sortedNotes.length === 0) {
-            container.innerHTML = '<p class="text-center text-slate-400 text-xs py-4">এই দোকানের জন্য কোনো নোট নেই</p>';
+            container.innerHTML = '<p style="text-align:center; color:#888; font-size:13px; margin-top:10px;">No notes for this shop.</p>';
             return;
         }
 
@@ -709,63 +793,58 @@
             const card = document.createElement('div');
             card.className = 'keep-note-card';
             card.innerHTML = `
-                <div class="text-[11px] font-bold text-amber-800 mb-1 flex items-center justify-between">
-                    <span>📅 ${note.date}</span>
-                </div>
-                <div class="text-xs text-slate-800 whitespace-pre-wrap mb-2 leading-relaxed">${note.content}</div>
-                <div class="flex justify-end gap-1 border-t border-amber-300/60 pt-1.5">
-                    <button type="button" class="bg-amber-600 hover:bg-amber-700 text-white text-[10px] px-2 py-0.5 rounded font-semibold transition-colors" onclick="editKeepNote('${note.id}')">Edit</button>
-                    <button type="button" class="bg-red-500 hover:bg-red-600 text-white text-[10px] px-2 py-0.5 rounded font-semibold transition-colors" onclick="deleteKeepNote('${note.id}')">Delete</button>
+                <div class="keep-note-date">📌 ${note.date}</div>
+                <div class="keep-note-text">${note.content}</div>
+                <div style="display:flex; justify-content:flex-end; gap:6px;">
+                    <button type="button" onclick="editNote('${note.id}')" style="padding:3px 8px; font-size:10px; background:#f39c12;">Edit</button>
+                    <button type="button" onclick="deleteNote('${note.id}')" style="padding:3px 8px; font-size:10px; background:#e74c3c;">Delete</button>
                 </div>
             `;
             container.appendChild(card);
         });
     }
 
-    function editKeepNote(id) {
-        const shopNotes = getUserShops()[currentShop].notes;
-        const note = shopNotes.find(n => n.id === id);
-        if (!note) return;
-
-        document.getElementById('keep-content').value = note.content;
-        document.getElementById('keep-date').value = note.date;
-        editingNoteId = id;
-        document.getElementById('keep-submit-btn').innerText = 'Update Note';
+    function editNote(id) {
+        const shops = getUserShops();
+        const note = shops[currentShop].notes.find(n => n.id === id);
+        if (note) {
+            document.getElementById('keep-content').value = note.content;
+            document.getElementById('keep-date').value = note.date;
+            editingNoteId = id;
+            document.getElementById('keep-submit-btn').innerText = 'Update';
+        }
     }
 
-    function deleteKeepNote(id) {
-        getUserShops()[currentShop].notes = getUserShops()[currentShop].notes.filter(n => n.id !== id);
+    function deleteNote(id) {
+        if (!confirm("নোটটি মুছে ফেলতে চান?")) return;
+        const shops = getUserShops();
+        shops[currentShop].notes = shops[currentShop].notes.filter(n => n.id !== id);
         renderKeepNotes();
         saveUserData();
-        showToast("নোট মুছে ফেলা হয়েছে");
     }
 
-    // Daily Transaction Modal Editing Operations
     function openEditModal(date, type) {
         const modal = document.getElementById('editModal');
-        const modalTitle = document.getElementById('modal-date-title');
+        const titleEl = document.getElementById('modal-date-title');
         const container = document.getElementById('modal-items-container');
         container.innerHTML = '';
 
-        modalTitle.innerText = `Edit: ${date} (${type.toUpperCase()})`;
-        const shopTransactions = getUserShops()[currentShop].transactions;
-        const filteredItems = shopTransactions.filter(item => item.date === date && item.type === type);
+        titleEl.innerText = `Edit Transactions (${date})`;
 
-        filteredItems.forEach(item => {
-            const itemDiv = document.createElement('div');
-            itemDiv.className = 'p-3 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between gap-2';
-            itemDiv.innerHTML = `
-                <div class="flex flex-col gap-1.5 flex-1">
-                    <input type="text" id="edit-title-${item.id}" value="${item.title}" class="w-full px-2 py-1 text-xs border border-slate-300 rounded focus:ring-1 focus:ring-amber-500 outline-none" />
-                    <input type="number" id="edit-amount-${item.id}" value="${item.amount}" step="any" class="w-full px-2 py-1 text-xs border border-slate-300 rounded focus:ring-1 focus:ring-amber-500 outline-none" />
-                </div>
-                <div class="flex flex-col gap-1">
-                    <button type="button" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] px-2.5 py-1 rounded font-semibold transition-colors" onclick="saveSingleItem('${item.id}', '${date}', '${type}')">Save</button>
-                    <button type="button" class="bg-red-500 hover:bg-red-600 text-white text-[11px] px-2.5 py-1 rounded font-semibold transition-colors" onclick="deleteSingleItem('${item.id}', '${date}', '${type}')">Delete</button>
-                </div>
+        const shops = getUserShops();
+        const txns = shops[currentShop].transactions.filter(t => t.date === date && t.type === type);
+
+        txns.forEach(t => {
+            const itemBox = document.createElement('div');
+            itemBox.style.cssText = "margin-bottom: 12px; padding: 10px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 6px;";
+            itemBox.innerHTML = `
+                <input type="text" id="edit_title_${t.id}" value="${t.title}" style="width:100%; margin-bottom:6px; padding:6px; font-size: 16px;" />
+                <input type="number" id="edit_amount_${t.id}" value="${t.amount}" step="any" style="width:100%; margin-bottom:6px; padding:6px; font-size: 16px;" />
+                <button type="button" onclick="saveSingleTransactionEdit('${t.id}')" style="padding:6px 12px; font-size:12px; background:#27ae60;">Save</button>
             `;
-            container.appendChild(itemDiv);
+            container.appendChild(itemBox);
         });
+
         modal.style.display = 'flex';
     }
 
@@ -774,90 +853,55 @@
         updateUI();
     }
 
-    function saveSingleItem(id, date, type) {
-        const newTitle = document.getElementById(`edit-title-${id}`).value.trim();
-        const newAmount = parseFloat(document.getElementById(`edit-amount-${id}`).value);
+    function saveSingleTransactionEdit(id) {
+        const newTitle = document.getElementById(`edit_title_${id}`).value.trim();
+        const newAmount = parseFloat(document.getElementById(`edit_amount_${id}`).value);
 
         if (!newTitle || isNaN(newAmount) || newAmount <= 0) {
-            showToast('সঠিক তথ্য দিন!', 'error');
+            alert("সঠিক তথ্য দিন!");
             return;
         }
 
-        const shopTransactions = getUserShops()[currentShop].transactions;
-        const item = shopTransactions.find(t => t.id === id);
-        if (item) {
-            item.title = newTitle;
-            item.amount = newAmount;
-        }
-
-        showToast('সফলভাবে আপডেট করা হয়েছে!', 'success');
-        openEditModal(date, type);
-        updateUI();
-    }
-
-    function deleteSingleItem(id, date, type) {
-        let shopTransactions = getUserShops()[currentShop].transactions;
-        getUserShops()[currentShop].transactions = shopTransactions.filter(t => t.id !== id);
-
-        const remaining = getUserShops()[currentShop].transactions.filter(t => t.date === date && t.type === type);
-        if (remaining.length === 0) {
+        const shops = getUserShops();
+        const txn = shops[currentShop].transactions.find(t => t.id === id);
+        if (txn) {
+            txn.title = newTitle;
+            txn.amount = newAmount;
+            saveUserData();
+            alert("সফলভাবে আপডেট হয়েছে!");
             closeEditModal();
-        } else {
-            openEditModal(date, type);
         }
-        updateUI();
-        showToast('আইটেম মুছে ফেলা হয়েছে');
     }
 
-    function deleteGroup(idsString) {
-        if (!confirm('এই তারিখ ও টাইপের সমস্ত লেনদেন মুছে ফেলতে চান?')) return;
-        const idsToDelete = idsString.split(',');
-        let shopTransactions = getUserShops()[currentShop].transactions;
-        getUserShops()[currentShop].transactions = shopTransactions.filter(item => !idsToDelete.includes(item.id));
-        updateUI();
-        showToast('গ্রুপ রেকর্ডসমূহ মুছে ফেলা হয়েছে');
-    }
-
-    function clearFilter() {
-        document.getElementById('filter-date').value = '';
-        updateUI();
-    }
-
-    // Export current data snapshot into downloadable JSON file
     function backupData() {
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(allUsersData));
         const downloadAnchor = document.createElement('a');
         downloadAnchor.setAttribute("href", dataStr);
-        downloadAnchor.setAttribute("download", `Shop_Tracker_Backup_${currentUser}_${getTodayDate()}.json`);
+        downloadAnchor.setAttribute("download", `shop_tracker_backup_${getTodayDate()}.json`);
         document.body.appendChild(downloadAnchor);
         downloadAnchor.click();
         downloadAnchor.remove();
-        showToast('ব্যাকআপ ফাইল ডাউনলোড সফল হয়েছে!', 'success');
     }
 
-    // Import JSON backup data back into local state
     function importData(event) {
         const fileReader = new FileReader();
-        fileReader.onload = function() {
-            try {
-                const imported = JSON.parse(fileReader.result);
-                if (imported) {
-                    allUsersData = imported;
-                    localStorage.setItem('allUsersData', JSON.stringify(allUsersData));
-                    checkLoginState();
-                    showToast('ডেটা সফলভাবে রিস্টোর হয়েছে!', 'success');
-                }
-            } catch (e) {
-                showToast('ভুল ব্যাকআপ ফাইল!', 'error');
-            }
-        };
         if (event.target.files[0]) {
-            fileReader.readAsText(event.target.files[0]);
+            fileReader.readAsText(event.target.files[0], "UTF-8");
+            fileReader.onload = function(e) {
+                try {
+                    const parsedData = JSON.parse(e.target.result);
+                    if (parsedData) {
+                        allUsersData = parsedData;
+                        saveUserData();
+                        checkLoginState();
+                        alert("ব্যাকআপ সফলভাবে রিস্টোর করা হয়েছে!");
+                    }
+                } catch (error) {
+                    alert("ভুল ফাইল ফরম্যাট!");
+                }
+            };
         }
     }
-
-    // Initialize application state
-    checkLoginState();
 </script>
 </body>
 </html>
