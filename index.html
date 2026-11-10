@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -47,27 +47,6 @@
         .btn-add { background: #2980b9; }
         .btn-edit { background: #f39c12; }
         .btn-delete { background: #e74c3c; }
-
-        /* Empty Shop Banner */
-        .no-shop-banner {
-            background: #fff3cd;
-            border: 1px solid #ffe8a1;
-            color: #856404;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            margin-bottom: 15px;
-        }
-        .no-shop-banner button {
-            margin-top: 10px;
-            background: #27ae60;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-        }
 
         /* All Shops Total Overview Button */
         .all-shops-overview-btn {
@@ -252,72 +231,62 @@
             <button type="button" class="btn-add" onclick="addNewShop()">+ Add</button>
         </div>
 
-        <!-- Banner shown when no regular shop exists -->
-        <div id="no-shop-message" class="no-shop-banner" style="display: none;">
-            📢 আপনার কোনো দোকান যোগ করা নেই! হিসাব শুরু করতে দোকান যোগ করুন।
-            <br>
-            <button type="button" onclick="addNewShop()">➕ Create Shop Now</button>
+        <!-- All Shops Total Overview Button -->
+        <button type="button" class="all-shops-overview-btn" onclick="openAllShopsModal()">
+            📊 সব দোকানের মোট হিসাব একসাথে দেখুন
+        </button>
+
+        <!-- Summary Header with Notes Icon -->
+        <div class="summary-header">
+            <span class="summary-title" id="current-shop-title">Financial Summary</span>
+            <button type="button" class="notebook-icon-btn" onclick="openKeepModal()">💡 Notes</button>
         </div>
 
-        <!-- Main App Content Container (Hidden if no valid shop selected) -->
-        <div id="main-shop-content">
-            <!-- All Shops Total Overview Button -->
-            <button type="button" class="all-shops-overview-btn" onclick="openAllShopsModal()">
-                📊 সব দোকানের মোট হিসাব একসাথে দেখুন
-            </button>
-
-            <!-- Summary Header with Notes Icon -->
-            <div class="summary-header">
-                <span class="summary-title" id="current-shop-title">Financial Summary</span>
-                <button type="button" class="notebook-icon-btn" onclick="openKeepModal()">💡 Notes</button>
+        <!-- Financial Summary Box -->
+        <div class="summary">
+            <div>
+                <h3>Income</h3>
+                <p id="total-income" class="income">৳0.00</p>
             </div>
-
-            <!-- Financial Summary Box -->
-            <div class="summary">
-                <div>
-                    <h3>Income</h3>
-                    <p id="total-income" class="income">৳0.00</p>
-                </div>
-                <div>
-                    <h3>Expense</h3>
-                    <p id="total-expense" class="expense">৳0.00</p>
-                </div>
-                <div>
-                    <h3>Balance</h3>
-                    <p id="net-balance" class="balance">৳0.00</p>
-                </div>
+            <div>
+                <h3>Expense</h3>
+                <p id="total-expense" class="expense">৳0.00</p>
             </div>
-
-            <!-- Add Transaction Form -->
-            <form id="tracker-form">
-                <input type="text" id="title" placeholder="Description (e.g. Sales, Rent)" required />
-                <input type="number" id="amount" placeholder="Amount (Taka)" step="any" min="0.01" required />
-                <input type="date" id="entry-date" required />
-                <select id="type">
-                    <option value="expense">Expense</option>
-                    <option value="income">Income</option>
-                </select>
-                <button type="submit">Add Transaction</button>
-            </form>
-
-            <!-- Backup & Restore Buttons -->
-            <div class="btn-group">
-                <button type="button" class="btn-gdrive" onclick="backupData()">☁️ Backup File</button>
-                <button type="button" onclick="document.getElementById('importFile').click()">📂 Restore File</button>
-                <input type="file" id="importFile" style="display:none" onchange="importData(event)" accept=".json">
+            <div>
+                <h3>Balance</h3>
+                <p id="net-balance" class="balance">৳0.00</p>
             </div>
-
-            <!-- Calendar Filter Section -->
-            <div class="filter-section">
-                <label for="filter-date">Filter by Date:</label>
-                <input type="date" id="filter-date" onchange="updateUI()" />
-                <button type="button" onclick="clearFilter()" style="padding: 5px 10px; font-size: 12px; background: #7f8c8d;">Show All</button>
-            </div>
-
-            <!-- History Container -->
-            <div class="section-title">Transaction History</div>
-            <div id="history-container" style="margin-top: 10px;"></div>
         </div>
+
+        <!-- Add Transaction Form -->
+        <form id="tracker-form">
+            <input type="text" id="title" placeholder="Description (e.g. Sales, Rent)" required />
+            <input type="number" id="amount" placeholder="Amount (Taka)" step="any" min="0.01" required />
+            <input type="date" id="entry-date" required />
+            <select id="type">
+                <option value="expense">Expense</option>
+                <option value="income">Income</option>
+            </select>
+            <button type="submit">Add Transaction</button>
+        </form>
+
+        <!-- Backup & Restore Buttons -->
+        <div class="btn-group">
+            <button type="button" class="btn-gdrive" onclick="backupData()">☁️ Backup File</button>
+            <button type="button" onclick="document.getElementById('importFile').click()">📂 Restore File</button>
+            <input type="file" id="importFile" style="display:none" onchange="importData(event)" accept=".json">
+        </div>
+
+        <!-- Calendar Filter Section -->
+        <div class="filter-section">
+            <label for="filter-date">Filter by Date:</label>
+            <input type="date" id="filter-date" onchange="updateUI()" />
+            <button type="button" onclick="clearFilter()" style="padding: 5px 10px; font-size: 12px; background: #7f8c8d;">Show All</button>
+        </div>
+
+        <!-- History Container -->
+        <div class="section-title">Transaction History</div>
+        <div id="history-container" style="margin-top: 10px;"></div>
     </div>
 
     <!-- All Shops Overview Modal -->
@@ -404,7 +373,7 @@
     let isSignUpMode = false;
     let currentUser = localStorage.getItem('activeUser') || null;
     let allUsersData = JSON.parse(localStorage.getItem('allUsersData')) || {};
-    let currentShop = "";
+    let currentShop = "Shop 1";
     let editingNoteId = null;
 
     checkLoginState();
@@ -417,28 +386,18 @@
             
             let shops = getUserShops();
             
-            // "টাকা পাবো" ডিফল্ট ক্যাটাগরি তৈরি রাখা
+            // ডিফল্টভাবে "টাকা পাবো" দোকানটি যুক্ত করে দেওয়া যদি নতুন ইউজার হয়
             if (!shops["টাকা পাবো"]) {
                 shops["টাকা পাবো"] = { transactions: [], notes: [] };
             }
-
-            // যদি পুরনো ডাটাতে Shop 1 থেকে থাকে কিন্তু কোনো ডাটা না থাকে, সেটি মুছে ফেলা
-            if (shops["Shop 1"] && shops["Shop 1"].transactions.length === 0 && shops["Shop 1"].notes.length === 0) {
-                delete shops["Shop 1"];
-                saveUserData();
+            if (!shops["Shop 1"]) {
+                shops["Shop 1"] = { transactions: [], notes: [] };
             }
 
             const shopKeys = Object.keys(shops);
-            // প্রথম সাধারণ দোকানটি বেছে নেওয়া
-            const regularShops = shopKeys.filter(s => s !== "টাকা পাবো");
-            if (regularShops.length > 0) {
-                currentShop = regularShops[0];
-            } else if (shops["টাকা পাবো"]) {
-                currentShop = "টাকা পাবো";
-            } else {
-                currentShop = "";
+            if (shopKeys.length > 0 && !shops[currentShop]) {
+                currentShop = shopKeys[0];
             }
-
             renderShopSelector();
             updateUI();
         } else {
@@ -469,11 +428,12 @@
             allUsersData[phone] = {
                 password: pass,
                 shops: { 
+                    "Shop 1": { transactions: [], notes: [] },
                     "টাকা পাবো": { transactions: [], notes: [] }
                 }
             };
             localStorage.setItem('allUsersData', JSON.stringify(allUsersData));
-            alert("সফলভাবে অ্যাকাউন্ট তৈরি হয়েছে! এখন লগইন করুন এবং আপনার দোকান যোগ করুন।");
+            alert("সফলভাবে অ্যাকাউন্ট তৈরি হয়েছে! এখন লগইন করুন।");
             toggleAuthMode();
             document.getElementById('auth-form').reset();
         } else {
@@ -499,15 +459,18 @@
             allUsersData[currentUser] = { 
                 password: "", 
                 shops: { 
+                    "Shop 1": { transactions: [], notes: [] },
                     "টাকা পাবো": { transactions: [], notes: [] }
                 } 
             };
         }
         if (!allUsersData[currentUser].shops) {
             allUsersData[currentUser].shops = { 
+                "Shop 1": { transactions: [], notes: [] },
                 "টাকা পাবো": { transactions: [], notes: [] }
             };
         }
+        // যদি পুরনো ইউজারের ক্ষেত্রে "টাকা পাবো" না থাকে, তবে অটো যুক্ত হবে
         if (!allUsersData[currentUser].shops["টাকা পাবো"]) {
             allUsersData[currentUser].shops["টাকা পাবো"] = { transactions: [], notes: [] };
         }
@@ -525,34 +488,29 @@
         const shops = getUserShops();
         const shopKeys = Object.keys(shops);
         
-        // "Create Shop" অপশন সিলেক্টরে দেখানো যদি কোনো আসল দোকান না থাকে
-        const optionCreate = document.createElement('option');
-        optionCreate.value = "__CREATE_NEW__";
-        optionCreate.innerText = "➕ Create Shop";
-        selector.appendChild(optionCreate);
+        if (shopKeys.length === 0) {
+            shops["Shop 1"] = { transactions: [], notes: [] };
+            shops["টাকা পাবো"] = { transactions: [], notes: [] };
+            currentShop = "Shop 1";
+        }
+
+        if (!shops[currentShop]) {
+            currentShop = Object.keys(shops)[0];
+        }
 
         shopKeys.forEach(shopName => {
             const option = document.createElement('option');
             option.value = shopName;
-            option.innerText = shopName === "টাকা পাবো" ? "📌 টাকা পাবো" : `🏪 ${shopName}`;
+            option.innerText = shopName;
             if (shopName === currentShop) option.selected = true;
             selector.appendChild(option);
         });
-
-        if (!currentShop || currentShop === "__CREATE_NEW__") {
-            optionCreate.selected = true;
-        }
-
-        const currentTitle = currentShop && currentShop !== "__CREATE_NEW__" ? `${currentShop} Summary` : "Summary";
-        document.getElementById('current-shop-title').innerText = currentTitle;
+        
+        document.getElementById('current-shop-title').innerText = `${currentShop} Summary`;
     }
 
     function changeActiveShop() {
         const selector = document.getElementById('shop-selector');
-        if (selector.value === "__CREATE_NEW__") {
-            addNewShop();
-            return;
-        }
         if (selector.value) {
             currentShop = selector.value;
             document.getElementById('current-shop-title').innerText = `${currentShop} Summary`;
@@ -567,11 +525,6 @@
             shopName = shopName.trim();
             if (!shopName) return;
             
-            if (shopName === "Shop 1") {
-                alert("'Shop 1' নাম ব্যবহার না করে আপনার নিজস্ব দোকানের নাম লিখুন!");
-                return;
-            }
-
             const shops = getUserShops();
             if (shops[shopName]) {
                 alert("এই নামের দোকান আগেই আছে!");
@@ -583,18 +536,12 @@
             saveUserData();
             renderShopSelector();
             updateUI();
-        } else {
-            renderShopSelector();
         }
     }
 
     function editCurrentShop() {
-        if (!currentShop || currentShop === "__CREATE_NEW__") {
-            alert("কোনো দোকান সিলেক্ট করা নেই!");
-            return;
-        }
         if (currentShop === "টাকা পাবো") {
-            alert("'টাকা পাবো' ক্যাটাগরির নাম পরিবর্তন করা যাবে না!");
+            alert("'টাকা পাবো' দোকানের নাম পরিবর্তন করা যাবে না!");
             return;
         }
         let newName = prompt("দোকানের নতুন নাম লিখুন:", currentShop);
@@ -625,27 +572,22 @@
     }
 
     function deleteCurrentShop() {
-        if (!currentShop || currentShop === "__CREATE_NEW__") {
-            alert("কোনো দোকান সিলেক্ট করা নেই!");
-            return;
-        }
         if (currentShop === "টাকা পাবো") {
-            alert("'টাকা পাবো' ক্যাটাগরি ডিলিট করা যাবে না!");
+            alert("'টাকা পাবো' দোকানটি ডিলিট করা যাবে না!");
             return;
         }
         const shops = getUserShops();
+        const shopKeys = Object.keys(shops);
+        
+        if (shopKeys.length <= 2) { // Shop 1 এবং 'টাকা পাবো' বাদ দিয়ে চেক
+            alert("কমপক্ষে একটি সাধারণ দোকান থাকা বাধ্যতামূলক, তাই এটি ডিলিট করা যাবে না!");
+            return;
+        }
 
         if (confirm(`আপনি কি সত্যিই '${currentShop}' দোকানটি এবং এর সমস্ত হিসাব মুছে ফেলতে চান?`)) {
             delete shops[currentShop];
-            
             const remainingKeys = Object.keys(shops);
-            const regularShops = remainingKeys.filter(s => s !== "টাকা পাবো");
-            
-            if (regularShops.length > 0) {
-                currentShop = regularShops[0];
-            } else {
-                currentShop = "টাকা পাবো";
-            }
+            currentShop = remainingKeys[0] === "টাকা পাবো" ? remainingKeys[1] : remainingKeys[0];
             
             saveUserData();
             renderShopSelector();
@@ -665,12 +607,13 @@
         let grandIncome = 0;
         let grandExpense = 0;
 
-        const regularShops = shopKeys.filter(s => s !== "টাকা পাবো");
-
-        if (regularShops.length === 0) {
-            container.innerHTML = '<p style="text-align:center; color:#888;">কোনো যোগ করা দোকান নেই।</p>';
+        if (shopKeys.length === 0) {
+            container.innerHTML = '<p style="text-align:center; color:#888;">কোনো দোকান নেই।</p>';
         } else {
-            regularShops.forEach(shopName => {
+            shopKeys.forEach(shopName => {
+                // "টাকা পাবো" দোকানটি ওভারভিউ মোডাল থেকে বাদ দেওয়া হলো
+                if (shopName === "টাকা পাবো") return;
+
                 const txns = shops[shopName].transactions || [];
                 let shopIncome = 0;
                 let shopExpense = 0;
@@ -715,38 +658,21 @@
 
     function updateUI() {
         renderShopSelector();
-
-        const noShopMessage = document.getElementById('no-shop-message');
-        const mainContent = document.getElementById('main-shop-content');
-        const shops = getUserShops();
-
-        // দোকান চেক করা
-        if (!currentShop || currentShop === "__CREATE_NEW__" || !shops[currentShop]) {
-            const keys = Object.keys(shops);
-            const regular = keys.filter(k => k !== "টাকা পাবো");
-            if (regular.length > 0) {
-                currentShop = regular[0];
-            } else if (shops["টাকা পাবো"]) {
-                currentShop = "টাকা পাবো";
-            }
-        }
-
-        const regularShops = Object.keys(shops).filter(s => s !== "টাকা পাবো");
-
-        // যদি কোনো দোকান না থাকে এবং বর্তমান সিলেক্টেড টাকা পাবো না হয়
-        if (regularShops.length === 0 && currentShop !== "টাকা পাবো") {
-            noShopMessage.style.display = 'block';
-        } else {
-            noShopMessage.style.display = 'none';
-        }
-
-        mainContent.style.display = 'block';
-
         const historyContainer = document.getElementById('history-container');
         historyContainer.innerHTML = '';
 
         const filterDate = document.getElementById('filter-date').value;
-        const shopTransactions = (shops[currentShop] && shops[currentShop].transactions) ? shops[currentShop].transactions : [];
+        const shops = getUserShops();
+        
+        if (!shops[currentShop]) {
+            const keys = Object.keys(shops);
+            currentShop = keys.length > 0 ? keys[0] : "Shop 1";
+            if (!shops[currentShop]) {
+                shops[currentShop] = { transactions: [], notes: [] };
+            }
+        }
+        
+        const shopTransactions = shops[currentShop].transactions || [];
 
         let totalIncomeSum = 0;
         let totalExpenseSum = 0;
@@ -803,13 +729,6 @@
 
     document.getElementById('tracker-form').addEventListener('submit', function(e) {
         e.preventDefault();
-
-        if (!currentShop || currentShop === "__CREATE_NEW__") {
-            alert("দয়া করে ট্রানজ্যাকশন যোগ করার আগে একটি দোকান বেছে নিন বা তৈরি করুন!");
-            addNewShop();
-            return;
-        }
-
         const title = document.getElementById('title').value.trim();
         const rawAmount = document.getElementById('amount').value;
         const date = document.getElementById('entry-date').value;
@@ -854,10 +773,6 @@
     }
 
     function openKeepModal() {
-        if (!currentShop || currentShop === "__CREATE_NEW__") {
-            alert("নোট দেখার জন্য একটি দোকান নির্বাচন করুন!");
-            return;
-        }
         document.getElementById('modal-shop-note-title').innerText = `💡 ${currentShop} Notes`;
         document.getElementById('keepModal').style.display = 'flex';
         renderKeepNotes();
@@ -927,8 +842,8 @@
                 <div class="keep-note-date">📌 ${note.date}</div>
                 <div class="keep-note-text">${note.content}</div>
                 <div style="display:flex; justify-content:flex-end; gap:6px;">
-                    <button type="button" onclick="editNote('${note.id}')" style="padding:3px 8px; font-size:10px; background:#f39c12; color:white; border:none; border-radius:4px; cursor:pointer;">Edit</button>
-                    <button type="button" onclick="deleteNote('${note.id}')" style="padding:3px 8px; font-size:10px; background:#e74c3c; color:white; border:none; border-radius:4px; cursor:pointer;">Delete</button>
+                    <button type="button" onclick="editNote('${note.id}')" style="padding:3px 8px; font-size:10px; background:#f39c12;">Edit</button>
+                    <button type="button" onclick="deleteNote('${note.id}')" style="padding:3px 8px; font-size:10px; background:#e74c3c;">Delete</button>
                 </div>
             `;
             container.appendChild(card);
@@ -937,8 +852,7 @@
 
     function editNote(id) {
         const shops = getUserShops();
-        if (!shops[currentShop] || !shops[currentShop].notes) return;
-        const note = shops[currentShop].notes.find(n => String(n.id) === String(id));
+        const note = shops[currentShop].notes.find(n => n.id === id);
         if (note) {
             document.getElementById('keep-content').value = note.content;
             document.getElementById('keep-date').value = note.date;
@@ -948,16 +862,114 @@
     }
 
     function deleteNote(id) {
+        if (!confirm("নোটটি মুছে ফেলতে চান?")) return;
         const shops = getUserShops();
-        if (!shops[currentShop] || !shops[currentShop].notes) return;
-        
-        // নোট ফিল্টার করে মুছে ফেলা
-        shops[currentShop].notes = shops[currentShop].notes.filter(n => String(n.id) !== String(id));
-        
-        saveUserData();
+        shops[currentShop].notes = shops[currentShop].notes.filter(n => n.id !== id);
         renderKeepNotes();
+        saveUserData();
     }
 
     function openEditModal(date, type) {
-<!-- ... existing code -->
-```
+        const modal = document.getElementById('editModal');
+        const titleEl = document.getElementById('modal-date-title');
+        const container = document.getElementById('modal-items-container');
+        container.innerHTML = '';
+
+        titleEl.innerText = `Edit Transactions (${date})`;
+
+        const shops = getUserShops();
+        const txns = shops[currentShop].transactions.filter(t => t.date === date && t.type === type);
+
+        txns.forEach(t => {
+            const itemBox = document.createElement('div');
+            itemBox.style.cssText = "margin-bottom: 12px; padding: 10px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 6px;";
+            itemBox.innerHTML = `
+                <input type="text" id="edit_title_${t.id}" value="${t.title}" style="width:100%; margin-bottom:6px; padding:6px; font-size: 16px;" />
+                <input type="number" id="edit_amount_${t.id}" value="${t.amount}" step="any" style="width:100%; margin-bottom:6px; padding:6px; font-size: 16px;" />
+                <button type="button" onclick="saveSingleTransactionEdit('${t.id}')" style="padding:6px 12px; font-size:12px; background:#27ae60;">Save</button>
+            `;
+            container.appendChild(itemBox);
+        });
+
+        modal.style.display = 'flex';
+    }
+
+    function closeEditModal() {
+        document.getElementById('editModal').style.display = 'none';
+        updateUI();
+    }
+
+    function saveSingleTransactionEdit(id) {
+        const newTitle = document.getElementById(`edit_title_${id}`).value.trim();
+        const newAmount = parseFloat(document.getElementById(`edit_amount_${id}`).value);
+
+        if (!newTitle || isNaN(newAmount) || newAmount <= 0) {
+            alert("সঠিক তথ্য দিন!");
+            return;
+        }
+
+        const shops = getUserShops();
+        const txn = shops[currentShop].transactions.find(t => t.id === id);
+        if (txn) {
+            txn.title = newTitle;
+            txn.amount = newAmount;
+            saveUserData();
+            alert("সফলভাবে আপডেট হয়েছে!");
+            closeEditModal();
+        }
+    }
+
+    function backupData() {
+        const dataJson = JSON.stringify(allUsersData);
+        
+        try {
+            const blob = new Blob([dataJson], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.href = url;
+            downloadAnchor.download = `shop_tracker_backup_${getTodayDate()}.json`;
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            URL.revokeObjectURL(url);
+        } catch (e) {
+            console.log("Direct download failed, showing text modal.");
+        }
+
+        document.getElementById('backup-text-area').value = dataJson;
+        document.getElementById('backupModal').style.display = 'flex';
+    }
+
+    function copyBackupText() {
+        const textArea = document.getElementById('backup-text-area');
+        textArea.select();
+        textArea.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(textArea.value).then(() => {
+            alert("ব্যাকআপ কোড কপি হয়ে গেছে! এটি আপনার আইফোনের Notes অ্যাপে পেস্ট করে সেভ করে রাখুন।");
+        }).catch(err => {
+            alert("কপি করা যায়নি, দয়া করে টেক্সট সিলেক্ট করে ম্যানুয়ালি কপি করুন।");
+        });
+    }
+
+    function importData(event) {
+        const fileReader = new FileReader();
+        if (event.target.files[0]) {
+            fileReader.readAsText(event.target.files[0], "UTF-8");
+            fileReader.onload = function(e) {
+                try {
+                    const parsedData = JSON.parse(e.target.result);
+                    if (parsedData) {
+                        allUsersData = parsedData;
+                        saveUserData();
+                        checkLoginState();
+                        alert("ব্যাকআপ সফলভাবে রিস্টোর করা হয়েছে!");
+                    }
+                } catch (error) {
+                    alert("ভুল ফাইল ফরম্যাট!");
+                }
+            };
+        }
+    }
+</script>
+</body>
+</html>
