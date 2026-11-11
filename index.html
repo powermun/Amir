@@ -9,148 +9,259 @@
             box-sizing: border-box; 
             margin: 0; 
             padding: 0; 
-            font-family: Arial, sans-serif; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
             touch-action: pan-x pan-y; 
         }
         body { 
             background-color: #f4f7f6; 
             padding: 15px; 
-            color: #333; 
+            color: #111; 
             -webkit-text-size-adjust: 100%; 
         }
-        .container { max-width: 500px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        h2 { text-align: center; margin-bottom: 15px; color: #2c3e50; }
+        
+        .container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            background: #fff; 
+            padding: 22px; 
+            border-radius: 16px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
+        }
+        h2 { text-align: center; margin-bottom: 15px; color: #1a252f; font-weight: 800; }
         
         /* Auth Screen Styles */
-        #auth-container { max-width: 400px; margin: 50px auto; background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; }
-        #auth-container input { width: 100%; margin-bottom: 12px; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 6px; }
-        #auth-container button { width: 100%; padding: 12px; background: #27ae60; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 15px; }
+        #auth-container { max-width: 450px; margin: 40px auto; background: #fff; padding: 25px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; }
+        #auth-container input { width: 100%; margin-bottom: 12px; height: 48px; font-size: 16px; border: 1px solid #ccc; border-radius: 8px; text-align: center; font-weight: bold; color: #111; }
+        #auth-container button { width: 100%; height: 48px; background: #27ae60; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; }
         #auth-container button:hover { background: #219150; }
-        .toggle-auth { margin-top: 15px; font-size: 13px; color: #2980b9; cursor: pointer; text-decoration: underline; }
+        .toggle-auth { margin-top: 15px; font-size: 14px; color: #1b4f72; cursor: pointer; text-decoration: underline; font-weight: bold; }
 
         /* App Header & Logout */
-        .app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .logout-btn { background: #e74c3c !important; font-size: 11px !important; padding: 5px 10px !important; width: auto !important; }
+        .app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 2px solid #ddd; padding-bottom: 12px; }
+        .user-phone-display { font-size: 16px; font-weight: 800; color: #1a252f; }
+        .logout-btn { background: #e74c3c !important; font-size: 12px !important; padding: 6px 12px !important; width: auto !important; height: auto !important; font-weight: bold !important; color: white !important; border: none !important; border-radius: 6px !important; cursor: pointer !important; }
 
-        /* Shop Selector Bar */
-        .shop-selector-section {
-            display: flex;
-            gap: 5px;
+        /* Unified Width Control: Both sections use identical 4-column grid structures */
+        .shop-selector-section, .row-second {
+            display: grid;
+            grid-template-columns: 1fr 65px 65px 65px;
+            gap: 6px;
             margin-bottom: 10px;
+            align-items: center;
             background: #eef2f5;
             padding: 10px;
-            border-radius: 8px;
-            align-items: center;
+            border-radius: 12px;
         }
-        .shop-selector-section select { flex: 1; padding: 8px; font-weight: bold; color: #2c3e50; border-radius: 6px; border: 1px solid #ccc; font-size: 14px; }
-        .shop-selector-section button { padding: 8px 8px; font-size: 11px; border-radius: 6px; border: none; color: white; cursor: pointer; font-weight: bold; }
-        .btn-add { background: #2980b9; }
-        .btn-edit { background: #f39c12; }
-        .btn-delete { background: #e74c3c; }
 
-        /* All Shops Total Overview Button */
-        .all-shops-overview-btn {
+        /* Upper Row Items */
+        .shop-selector-section select { 
             width: 100%;
-            background: #8e44ad;
+            height: 44px;
+            margin: 0;
+            padding: 0 8px;
+            font-weight: 800; 
+            color: #1a252f; 
+            border-radius: 8px; 
+            border: 1px solid #b2babb; 
+            font-size: 15px; 
+            text-align: center;
+            text-align-last: center;
+            background-color: #fff;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .shop-selector-section button { 
+            width: 100%;
+            height: 44px !important; 
+            padding: 0 !important; 
+            font-size: 12px !important; 
+            border-radius: 8px !important; 
+            border: none !important; 
+            color: white !important; 
+            cursor: pointer !important; 
+            font-weight: 800 !important; 
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            box-sizing: border-box !important;
+            margin: 0 !important;
+            white-space: nowrap;
+            outline: none;
+        }
+        .btn-edit { background: #27ae60 !important; } 
+        .btn-delete { background: #e74c3c !important; } 
+        .btn-add { background: #27ae60 !important; } 
+
+        /* Lower Row Items (Aligned directly under upper row elements) */
+        .row-second .left-box {
+            width: 100%;
+            height: 44px;
+            background: #ffffff;
+            border: 1px solid #b2babb;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            margin: 0;
+        }
+        .daily-sum-amount {
+            font-size: 16px;
+            font-weight: 900;
+            color: #000000;
+        }
+
+        /* Under Edit: History Button (Orange 🟠) */
+        .row-second .history-btn {
+            width: 100%;
+            height: 44px !important;
+            background: #f39c12 !important;
             color: white;
             border: none;
-            padding: 10px;
             border-radius: 8px;
-            font-weight: bold;
             cursor: pointer;
-            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            margin: 0 !important;
+            outline: none;
+        }
+
+        /* Under Delete: Calculator Button (Deep Green 🟢) */
+        .row-second .middle-calc-btn {
+            width: 100%;
+            height: 44px !important;
+            background: #27ae60 !important;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            margin: 0 !important;
+            outline: none;
+        }
+
+        /* Under Add: Notebook Button (Orange 🟠) */
+        .row-second .right-notes-btn {
+            width: 100%;
+            height: 44px !important;
+            background: #f39c12 !important;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            margin: 0 !important;
+            outline: none;
+        }
+
+        /* All Shops Overview Button (Full Width, Green) */
+        .all-shops-overview-btn {
+            width: 100%;
+            height: 44px;
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 0 10px;
+            border-radius: 8px;
+            font-weight: 800;
+            cursor: pointer;
             font-size: 13px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: background 0.2s;
-        }
-        .all-shops-overview-btn:hover { background: #732d91; }
-
-        /* Grand Total Box inside Modal */
-        .grand-total-box {
-            background: #2c3e50;
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
             text-align: center;
         }
-        .grand-total-box h4 { font-size: 14px; margin-bottom: 8px; color: #ecf0f1; border-bottom: 1px solid #415b76; padding-bottom: 4px; }
-        .grand-total-flex { display: flex; justify-content: space-between; font-size: 13px; }
 
-        /* Summary Header with Google Keep Notebook Icon */
-        .summary-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-        .summary-title { font-size: 14px; font-weight: bold; color: #7f8c8d; }
-        
-        .notebook-icon-btn {
-            background: #fbc02d;
-            color: #333;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-            transition: background 0.2s;
-        }
-        .notebook-icon-btn:hover { background: #f9a825; }
-
-        .summary { display: flex; justify-content: space-between; margin-bottom: 20px; background: #eef2f5; padding: 12px; border-radius: 8px; }
+        /* Financial Summary Box */
+        .summary { display: flex; justify-content: space-between; margin-bottom: 18px; background: #eef2f5; padding: 10px 14px; border-radius: 10px; border: 1px solid #d5dbdb; }
         .summary div { text-align: center; flex: 1; }
-        .summary h3 { font-size: 13px; color: #7f8c8d; }
-        .summary p { font-size: 16px; font-weight: bold; margin-top: 4px; }
-        .income { color: #27ae60; }
-        .expense { color: #c0392b; }
-        .balance { color: #2980b9; }
+        .summary h3 { font-size: 12px; color: #5d6d7e; font-weight: 800; }
+        .summary p { font-size: 16px; font-weight: 900; margin-top: 3px; }
+        .income { color: #1e8449; }
+        .expense { color: #b03a2e; }
+        .balance { color: #1b4f72; }
 
-        form { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-        input, select, textarea, button { padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 6px; }
-        button { background: #27ae60; color: white; border: none; cursor: pointer; font-weight: bold; }
-        button:hover { background: #219150; }
+        form { display: flex; flex-direction: column; gap: 12px; margin-bottom: 22px; }
+        
+        input[type="text"], 
+        input[type="number"], 
+        input[type="date"], 
+        select {
+            width: 100%;
+            height: 48px;
+            padding: 0 12px;
+            font-size: 16px;
+            border: 1px solid #bbb;
+            border-radius: 8px;
+            background-color: #fff;
+            text-align: center;
+            text-align-last: center;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            box-sizing: border-box;
+            font-weight: bold;
+            color: #111;
+        }
 
-        .btn-group { display: flex; gap: 10px; margin-bottom: 15px; }
-        .btn-group button { flex: 1; background: #34495e; font-size: 12px; padding: 10px; border-radius: 6px; cursor: pointer; color: white; font-weight: bold; border: none; }
-        .btn-gdrive { background: #0f9d58 !important; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        #submit-btn { 
+            height: 48px;
+            font-size: 16px; 
+            border-radius: 8px;
+            background: #27ae60 !important; 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            font-weight: 800; 
+            text-align: center; 
+        }
+        #submit-btn:hover { background: #219150 !important; }
 
-        .filter-section { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; background: #fafafa; padding: 10px; border-radius: 6px; border: 1px solid #eee; }
-        .filter-section label { font-size: 13px; font-weight: bold; color: #555; }
-        .filter-section input { padding: 5px; font-size: 14px; }
+        .btn-group { display: flex; gap: 10px; margin-bottom: 18px; }
+        .btn-group button { flex: 1; height: 44px; background: #2c3e50; font-size: 13px; padding: 0 10px; border-radius: 8px; cursor: pointer; color: white; font-weight: 800; border: none; }
+        .btn-gdrive { background: #117a65 !important; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .btn-restore { background: #e74c3c !important; } /* Red Restore Button */
 
-        .section-title { margin-top: 25px; margin-bottom: 10px; font-size: 16px; color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 5px; }
+        .filter-section { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; background: #fafafa; padding: 12px; border-radius: 8px; border: 1px solid #ddd; }
+        .filter-section label { font-size: 14px; font-weight: 800; color: #2c3e50; }
+        .filter-section input { height: 38px; width: auto; padding: 0 10px; font-size: 14px; font-weight: bold; }
+
+        .section-title { margin-top: 25px; margin-bottom: 12px; font-size: 17px; color: #1a252f; border-bottom: 2px solid #ddd; padding-bottom: 6px; font-weight: 900; }
 
         .daily-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: #fafafa;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
+            border: 1px solid #d5dbdb;
+            border-radius: 10px;
             padding: 12px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
-        .daily-row.income-row { border-left: 5px solid #27ae60; }
-        .daily-row.expense-row { border-left: 5px solid #c0392b; }
+        .daily-row.income-row { border-left: 6px solid #1e8449; }
+        .daily-row.expense-row { border-left: 6px solid #b03a2e; }
+        .daily-row.pabo-row { border-left: 6px solid #1e8449; }
+        .daily-row.dibe-row { border-left: 6px solid #b03a2e; }
 
-        .date-text { font-weight: bold; color: #2c3e50; font-size: 14px; }
-        .titles-text { font-size: 13px; color: #555; margin-top: 3px; }
+        .date-text { font-weight: 800; color: #1a252f; font-size: 14px; }
+        .titles-text { font-size: 13px; color: #2c3e50; margin-top: 2px; font-weight: bold; }
         
         .action-btns { display: flex; align-items: center; gap: 6px; }
-        .total-amount { font-size: 15px; font-weight: bold; margin-right: 5px; }
-        .edit-btn { background: #f39c12; color: white; border: none; padding: 5px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; }
-        .delete-all-btn { background: #e74c3c; color: white; border: none; padding: 5px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; }
+        .total-amount { font-size: 15px; font-weight: 900; margin-right: 4px; }
+        .edit-btn { background: #27ae60 !important; color: white; border: none; padding: 5px 8px; border-radius: 6px; cursor: pointer; font-size: 11px; height: auto; font-weight: 800; }
+        .delete-all-btn { background: #e74c3c !important; color: white; border: none; padding: 5px 8px; border-radius: 6px; cursor: pointer; font-size: 11px; height: auto; font-weight: 800; }
 
         /* Modal Styles */
         .modal {
@@ -162,43 +273,70 @@
             justify-content: center; align-items: center;
         }
         .modal-content {
-            background: #fff; padding: 20px; border-radius: 12px;
-            width: 90%; max-width: 450px; max-height: 85vh; overflow-y: auto;
+            background: #fff; padding: 14px; border-radius: 14px;
+            width: 90%; max-width: 480px; max-height: 85vh; overflow-y: auto;
             box-shadow: 0 4px 20px rgba(0,0,0,0.25);
         }
         .modal-header {
             display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 8px;
+            margin-bottom: 8px; border-bottom: 1px solid #ddd; padding-bottom: 6px;
         }
-        .close-modal { background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+        .close-modal { background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; height: auto; font-weight: 800; }
         
         .keep-input-box {
             background: #f1f3f4;
-            border: 1px solid #dadce0;
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 15px;
-        }
-        .keep-note-card {
-            background: #fff9c4;
-            border: 1px solid #fbc02d;
-            border-radius: 8px;
+            border: 1px solid #bdc3c7;
+            border-radius: 10px;
             padding: 10px;
             margin-bottom: 10px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
-        .keep-note-date { font-size: 11px; color: #5f6368; font-weight: bold; margin-bottom: 4px; }
-        .keep-note-text { font-size: 13px; color: #202124; white-space: pre-wrap; margin-bottom: 8px; }
+        
+        .note-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fafafa;
+            border: 1px solid #d5dbdb;
+            border-left: 5px solid #f39c12;
+            border-radius: 8px;
+            padding: 7px 9px;
+            margin-bottom: 5px;
+        }
+        .note-date { font-weight: 800; color: #1a252f; font-size: 12px; }
+        .note-text { font-size: 12px; color: #2c3e50; white-space: pre-wrap; margin-top: 1px; font-weight: bold; }
 
         .shop-total-item {
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fafafa;
+            border: 1px solid #d5dbdb;
+            border-left: 5px solid #27ae60;
             border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 10px;
+            padding: 5px 9px;
+            margin-bottom: 5px;
         }
-        .shop-total-name { font-weight: bold; font-size: 15px; color: #2c3e50; margin-bottom: 6px; }
-        .shop-total-details { display: flex; justify-content: space-between; font-size: 12px; gap: 5px; }
+        .shop-total-name { font-weight: 800; font-size: 12px; color: #1a252f; }
+        .shop-total-details { display: flex; gap: 8px; font-size: 12px; font-weight: 900; }
+
+        .grand-total-box {
+            background: #27ae60;
+            color: white;
+            padding: 7px 9px;
+            border-radius: 8px;
+            margin-bottom: 7px;
+            text-align: center;
+        }
+        .grand-total-box h4 { font-size: 12px; margin-bottom: 3px; color: #f2f4f4; border-bottom: 1px solid #219150; padding-bottom: 2px; font-weight: 800; }
+        .grand-total-flex { display: flex; justify-content: space-between; font-size: 11px; font-weight: 900; }
+
+        /* Calculator Styles */
+        .calc-display { width: 100%; height: 50px; background: #222; color: #fff; font-size: 22px; font-weight: bold; text-align: right; padding: 10px; border-radius: 8px; margin-bottom: 10px; overflow: hidden; }
+        .calc-keys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+        .calc-keys button { height: 45px; font-size: 16px; font-weight: bold; background: #e0e0e0; border: none; border-radius: 6px; cursor: pointer; }
+        .calc-keys button.operator { background: #f39c12; color: white; }
+        .calc-keys button.equal { background: #27ae60; color: white; grid-column: span 2; }
+        .calc-keys button.clear { background: #e74c3c; color: white; }
     </style>
 </head>
 <body>
@@ -217,44 +355,94 @@
     <!-- MAIN APP SCREEN -->
     <div class="container" id="app-container" style="display: none;">
         <div class="app-header">
-            <h2 style="margin:0; font-size: 18px;" id="welcome-user">Shop Tracker</h2>
+            <div class="user-phone-display" id="welcome-user">📱 ---</div>
             <button type="button" class="logout-btn" onclick="logout()">Logout</button>
         </div>
 
-        <!-- Shop Selector Bar -->
+        <!-- Shop Selector Bar (Upper Row: Select + Edit Icon + Delete Icon + Add Icon) -->
         <div class="shop-selector-section">
             <select id="shop-selector" onchange="changeActiveShop()">
                 <!-- Shops loaded dynamically -->
             </select>
-            <button type="button" class="btn-edit" onclick="editCurrentShop()">Edit</button>
-            <button type="button" class="btn-delete" onclick="deleteCurrentShop()">Delete</button>
-            <button type="button" class="btn-add" onclick="addNewShop()">+ Add</button>
+            <button type="button" class="btn-edit" onclick="editCurrentShop()" title="Edit Shop">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 20h9" stroke="white" stroke-width="2.2"></path>
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" fill="white" stroke="white" stroke-width="2"></path>
+                </svg>
+            </button>
+            <button type="button" class="btn-delete" onclick="deleteCurrentShop()" title="Delete Shop">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6" stroke="white" stroke-width="2.2"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" fill="white" stroke="white" stroke-width="2"></path>
+                    <line x1="10" y1="11" x2="10" y2="17" stroke="#e74c3c" stroke-width="2"></line>
+                    <line x1="14" y1="11" x2="14" y2="17" stroke="#e74c3c" stroke-width="2"></line>
+                </svg>
+            </button>
+            <button type="button" class="btn-add" onclick="addNewShop()" title="Add Shop">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="14" height="14" rx="2" fill="white" stroke="white" stroke-width="2"></rect>
+                    <line x1="10" y1="6" x2="10" y2="14" stroke="#27ae60" stroke-width="2.5"></line>
+                    <line x1="6" y1="10" x2="14" y2="10" stroke="#27ae60" stroke-width="2.5"></line>
+                    <path d="M19 7h1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2v-1" stroke="white" stroke-width="2"></path>
+                </svg>
+            </button>
         </div>
 
-        <!-- All Shops Total Overview Button -->
+        <!-- Row 2: Aligned Directly Under Upper Row -->
+        <div class="row-second">
+            <div class="left-box">
+                <div class="daily-sum-amount" id="daily-total-amount">Tk 0</div>
+            </div>
+            <!-- Under Edit: History Button -->
+            <button type="button" class="history-btn" onclick="openHistoryModal()" title="History">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" fill="white" stroke="white"></circle>
+                    <polyline points="12 6 12 12 16 14" stroke="#f39c12" stroke-width="2.2"></polyline>
+                </svg>
+            </button>
+            <!-- Under Delete: Calculator Button -->
+            <button type="button" class="middle-calc-btn" onclick="openCalcModal()" title="Calculator">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="4" y="2" width="16" height="20" rx="2" ry="2" fill="white" stroke="white"></rect>
+                    <line x1="8" y1="6" x2="16" y2="6" stroke="#27ae60" stroke-width="2"></line>
+                    <line x1="8" y1="10" x2="10" y2="10" stroke="#27ae60" stroke-width="2"></line>
+                    <line x1="14" y1="10" x2="16" y2="10" stroke="#27ae60" stroke-width="2"></line>
+                    <line x1="8" y1="14" x2="10" y2="14" stroke="#27ae60" stroke-width="2"></line>
+                    <line x1="14" y1="14" x2="16" y2="14" stroke="#27ae60" stroke-width="2"></line>
+                    <line x1="8" y1="18" x2="10" y2="18" stroke="#27ae60" stroke-width="2"></line>
+                    <line x1="14" y1="18" x2="16" y2="18" stroke="#27ae60" stroke-width="2"></line>
+                </svg>
+            </button>
+            <!-- Under Add: Notebook Button -->
+            <button type="button" class="right-notes-btn" onclick="openKeepModal()" title="Notes">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" fill="white" stroke="white"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" fill="white" stroke="white"></path>
+                    <line x1="9" y1="7" x2="15" y2="7" stroke="#f39c12" stroke-width="2"></line>
+                    <line x1="9" y1="11" x2="15" y2="11" stroke="#f39c12" stroke-width="2"></line>
+                    <line x1="9" y1="15" x2="13" y2="15" stroke="#f39c12" stroke-width="2"></line>
+                </svg>
+            </button>
+        </div>
+
+        <!-- All Shops Overview Button -->
         <button type="button" class="all-shops-overview-btn" onclick="openAllShopsModal()">
             📊 সব দোকানের মোট হিসাব একসাথে দেখুন
         </button>
 
-        <!-- Summary Header with Notes Icon -->
-        <div class="summary-header">
-            <span class="summary-title" id="current-shop-title">Financial Summary</span>
-            <button type="button" class="notebook-icon-btn" onclick="openKeepModal()">💡 Notes</button>
-        </div>
-
         <!-- Financial Summary Box -->
-        <div class="summary">
+        <div class="summary" id="summary-box">
             <div>
-                <h3>Income</h3>
-                <p id="total-income" class="income">৳0.00</p>
+                <h3 id="label-income">টাকা পাবো</h3>
+                <p id="total-income" class="income">Tk 0</p>
             </div>
             <div>
-                <h3>Expense</h3>
-                <p id="total-expense" class="expense">৳0.00</p>
+                <h3 id="label-expense">টাকা পাবে</h3>
+                <p id="total-expense" class="expense">Tk 0</p>
             </div>
             <div>
-                <h3>Balance</h3>
-                <p id="net-balance" class="balance">৳0.00</p>
+                <h3 id="label-balance">Balance</h3>
+                <p id="net-balance" class="balance">Tk 0</p>
             </div>
         </div>
 
@@ -262,26 +450,28 @@
         <form id="tracker-form">
             <input type="text" id="title" placeholder="Description (e.g. Sales, Rent)" required />
             <input type="number" id="amount" placeholder="Amount (Taka)" step="any" min="0.01" required />
-            <input type="date" id="entry-date" required />
+            <div id="date-field-container">
+                <input type="date" id="entry-date" required />
+            </div>
             <select id="type">
                 <option value="expense">Expense</option>
                 <option value="income">Income</option>
             </select>
-            <button type="submit">Add Transaction</button>
+            <button type="submit" id="submit-btn">Add Transaction</button>
         </form>
 
         <!-- Backup & Restore Buttons -->
         <div class="btn-group">
             <button type="button" class="btn-gdrive" onclick="backupData()">☁️ Backup File</button>
-            <button type="button" onclick="document.getElementById('importFile').click()">📂 Restore File</button>
+            <button type="button" class="btn-restore" onclick="document.getElementById('importFile').click()">📂 Restore File</button>
             <input type="file" id="importFile" style="display:none" onchange="importData(event)" accept=".json">
         </div>
 
         <!-- Calendar Filter Section -->
-        <div class="filter-section">
+        <div class="filter-section" id="filter-section-box">
             <label for="filter-date">Filter by Date:</label>
             <input type="date" id="filter-date" onchange="updateUI()" />
-            <button type="button" onclick="clearFilter()" style="padding: 5px 10px; font-size: 12px; background: #7f8c8d;">Show All</button>
+            <button type="button" onclick="clearFilter()" style="padding: 6px 12px; font-size: 13px; background: #566573; height: auto; font-weight: bold;">Show All</button>
         </div>
 
         <!-- History Container -->
@@ -289,20 +479,50 @@
         <div id="history-container" style="margin-top: 10px;"></div>
     </div>
 
+    <!-- Calculator Modal -->
+    <div id="calcModal" class="modal">
+        <div class="modal-content" style="max-width: 320px;">
+            <div class="modal-header">
+                <h3 style="font-size: 14px; font-weight: 900; color: #1a252f;">🧮 Calculator</h3>
+                <button type="button" class="close-modal" onclick="closeCalcModal()">X</button>
+            </div>
+            <div class="calc-display" id="calc-screen">0</div>
+            <div class="calc-keys">
+                <button class="clear" onclick="calcClear()">C</button>
+                <button class="operator" onclick="calcAppend('/')">÷</button>
+                <button class="operator" onclick="calcAppend('*')">×</button>
+                <button class="operator" onclick="calcAppend('-')">-</button>
+                <button onclick="calcAppend('7')">7</button>
+                <button onclick="calcAppend('8')">8</button>
+                <button onclick="calcAppend('9')">9</button>
+                <button class="operator" onclick="calcAppend('+')">+</button>
+                <button onclick="calcAppend('4')">4</button>
+                <button onclick="calcAppend('5')">5</button>
+                <button onclick="calcAppend('6')">6</button>
+                <button onclick="calcAppend('.')">.</button>
+                <button onclick="calcAppend('1')">1</button>
+                <button onclick="calcAppend('2')">2</button>
+                <button onclick="calcAppend('3')">3</button>
+                <button class="equal" onclick="calcCalculate()">=</button>
+                <button onclick="calcAppend('0')" style="grid-column: span 2;">0</button>
+            </div>
+        </div>
+    </div>
+
     <!-- All Shops Overview Modal -->
     <div id="allShopsModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>📊 সকল দোকানের মোট হিসাব</h3>
+                <h3 style="font-size: 14px; font-weight: 900; color: #1a252f;">📊 সকল দোকানের মোট হিসাব</h3>
                 <button type="button" class="close-modal" onclick="closeAllShopsModal()">X</button>
             </div>
             
             <div class="grand-total-box">
                 <h4>✨ সর্বমোট হিসাব (সকল দোকান মিলিয়ে)</h4>
                 <div class="grand-total-flex">
-                    <span style="color: #2ecc71;">Income: <strong id="modal-grand-income">৳0.00</strong></span>
-                    <span style="color: #e74c3c;">Expense: <strong id="modal-grand-expense">৳0.00</strong></span>
-                    <span style="color: #3498db;">Balance: <strong id="modal-grand-balance">৳0.00</strong></span>
+                    <span style="color: #fff;">Income: <strong id="modal-grand-income">Tk 0</strong></span>
+                    <span style="color: #ffcccc;">Expense: <strong id="modal-grand-expense">Tk 0</strong></span>
+                    <span style="color: #e8f8f5;">Balance: <strong id="modal-grand-balance">Tk 0</strong></span>
                 </div>
             </div>
 
@@ -310,19 +530,30 @@
         </div>
     </div>
 
+    <!-- History Datewise Modal -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 style="font-size: 14px; font-weight: 900; color: #1a252f;">🕒 তারিখ অনুযায়ী সব দোকানের মোট হিসাব</h3>
+                <button type="button" class="close-modal" onclick="closeHistoryModal()">X</button>
+            </div>
+            <div id="history-modal-list-container"></div>
+        </div>
+    </div>
+
     <!-- Google Keep Style Notes Modal -->
     <div id="keepModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="modal-shop-note-title">💡 Notes</h3>
+                <h3 id="modal-shop-note-title" style="font-size: 14px; font-weight: 900; color: #1a252f;">📖 Notes</h3>
                 <button type="button" class="close-modal" onclick="closeKeepModal()">X</button>
             </div>
-            <form id="keep-note-form" style="margin-bottom: 15px;">
+            <form id="keep-note-form" style="margin-bottom: 8px;">
                 <div class="keep-input-box">
-                    <textarea id="keep-content" placeholder="Take a note..." rows="3" style="width:100%; border:none; background:transparent; outline:none; resize:none;" required></textarea>
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
-                        <input type="date" id="keep-date" style="padding:4px; font-size:12px;" required />
-                        <button type="submit" id="keep-submit-btn" style="padding:6px 12px; font-size:12px; background:#f57c00;">Done</button>
+                    <textarea id="keep-content" placeholder="Take a note..." rows="2" style="width: 100%; border:none; background:transparent; outline:none; resize:none; text-align:center; font-size: 13px; font-weight: bold; color: #111;" required></textarea>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
+                        <input type="date" id="keep-date" style="padding:2px; font-size:11px; width:auto; height: 30px; font-weight: bold;" required />
+                        <button type="submit" id="keep-submit-btn" style="padding:4px 10px; font-size:11px; background:#27ae60; height: 30px; font-weight: bold; color:white;">Done</button>
                     </div>
                 </div>
             </form>
@@ -334,7 +565,7 @@
     <div id="editModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="modal-date-title">Edit Transactions</h3>
+                <h3 id="modal-date-title" style="font-size: 14px; font-weight: 900; color: #1a252f;">Edit Transactions</h3>
                 <button type="button" class="close-modal" onclick="closeEditModal()">X</button>
             </div>
             <div id="modal-items-container"></div>
@@ -345,12 +576,12 @@
     <div id="backupModal" class="modal">
         <div class="modal-content" style="text-align: center;">
             <div class="modal-header">
-                <h3>☁️ Backup Data (iPhone)</h3>
+                <h3 style="font-size: 14px; font-weight: 900; color: #1a252f;">☁️ Backup Data (iPhone)</h3>
                 <button type="button" class="close-modal" onclick="document.getElementById('backupModal').style.display='none'">X</button>
             </div>
-            <p style="font-size: 13px; color: #666; margin-bottom: 10px;">নিচের টেক্সটগুলো কপি করে আপনার ফোনের Notes বা কোনো জায়গায় সেভ করে রাখুন। রিস্টোর করার সময় এটি কাজে লাগবে।</p>
-            <textarea id="backup-text-area" rows="6" style="width:100%; font-size:11px; padding:8px; border:1px solid #ccc; border-radius:6px; margin-bottom:10px;" readonly></textarea>
-            <button type="button" onclick="copyBackupText()" style="background: #2980b9; width: 100%; padding: 10px; font-size: 14px;">Copy Backup Code</button>
+            <p style="font-size: 12px; color: #333; margin-bottom: 6px; font-weight: bold;">নিচের টেক্সটগুলো কপি করে আপনার ফোনের নোটসে পেস্ট করে রাখুন।</p>
+            <textarea id="backup-text-area" rows="5" style="width:100%; font-size:11px; padding:6px; border:1px solid #ccc; border-radius:8px; margin-bottom:8px; text-align:center; font-weight: bold;" readonly></textarea>
+            <button type="button" onclick="copyBackupText()" style="background: #27ae60; width: 100%; height: 38px; font-size: 13px; font-weight: bold; color:white;">Copy Backup Code</button>
         </div>
     </div>
 
@@ -367,13 +598,30 @@
         return `${year}-${month}-${day}`;
     }
 
+    // Helper function to format date as DD-MM-YYYY
+    function formatDateDDMMYYYY(dateString) {
+        if (!dateString) return '';
+        const parts = dateString.split('-');
+        if (parts.length === 3) {
+            return `${parts[2]}-${parts[1]}-${parts[0]}`;
+        }
+        return dateString;
+    }
+
+    // Helper function to format amount with 'Tk ' prefix and without decimals if whole number
+    function formatAmount(val) {
+        const num = parseFloat(val) || 0;
+        const formattedNum = Number.isInteger(num) ? num.toString() : num.toFixed(2);
+        return `Tk ${formattedNum}`;
+    }
+
     document.getElementById('entry-date').value = getTodayDate();
     document.getElementById('keep-date').value = getTodayDate();
 
     let isSignUpMode = false;
     let currentUser = localStorage.getItem('activeUser') || null;
     let allUsersData = JSON.parse(localStorage.getItem('allUsersData')) || {};
-    let currentShop = "Shop 1";
+    let currentShop = "টাকা পাবো";
     let editingNoteId = null;
 
     checkLoginState();
@@ -382,16 +630,12 @@
         if (currentUser && allUsersData[currentUser]) {
             document.getElementById('auth-container').style.display = 'none';
             document.getElementById('app-container').style.display = 'block';
-            document.getElementById('welcome-user').innerText = `User: ${currentUser}`;
+            document.getElementById('welcome-user').innerText = `📱 ${currentUser}`;
             
             let shops = getUserShops();
             
-            // ডিফল্টভাবে "টাকা পাবো" দোকানটি যুক্ত করে দেওয়া যদি নতুন ইউজার হয়
             if (!shops["টাকা পাবো"]) {
                 shops["টাকা পাবো"] = { transactions: [], notes: [] };
-            }
-            if (!shops["Shop 1"]) {
-                shops["Shop 1"] = { transactions: [], notes: [] };
             }
 
             const shopKeys = Object.keys(shops);
@@ -399,7 +643,7 @@
                 currentShop = shopKeys[0];
             }
             renderShopSelector();
-            updateUI();
+            changeActiveShop();
         } else {
             document.getElementById('auth-container').style.display = 'block';
             document.getElementById('app-container').style.display = 'none';
@@ -428,7 +672,6 @@
             allUsersData[phone] = {
                 password: pass,
                 shops: { 
-                    "Shop 1": { transactions: [], notes: [] },
                     "টাকা পাবো": { transactions: [], notes: [] }
                 }
             };
@@ -459,20 +702,20 @@
             allUsersData[currentUser] = { 
                 password: "", 
                 shops: { 
-                    "Shop 1": { transactions: [], notes: [] },
                     "টাকা পাবো": { transactions: [], notes: [] }
                 } 
             };
         }
         if (!allUsersData[currentUser].shops) {
             allUsersData[currentUser].shops = { 
-                "Shop 1": { transactions: [], notes: [] },
                 "টাকা পাবো": { transactions: [], notes: [] }
             };
         }
-        // যদি পুরনো ইউজারের ক্ষেত্রে "টাকা পাবো" না থাকে, তবে অটো যুক্ত হবে
         if (!allUsersData[currentUser].shops["টাকা পাবো"]) {
             allUsersData[currentUser].shops["টাকা পাবো"] = { transactions: [], notes: [] };
+        }
+        if (allUsersData[currentUser].shops["Shop 1"]) {
+            delete allUsersData[currentUser].shops["Shop 1"];
         }
         return allUsersData[currentUser].shops;
     }
@@ -489,9 +732,8 @@
         const shopKeys = Object.keys(shops);
         
         if (shopKeys.length === 0) {
-            shops["Shop 1"] = { transactions: [], notes: [] };
             shops["টাকা পাবো"] = { transactions: [], notes: [] };
-            currentShop = "Shop 1";
+            currentShop = "টাকা পাবো";
         }
 
         if (!shops[currentShop]) {
@@ -505,18 +747,51 @@
             if (shopName === currentShop) option.selected = true;
             selector.appendChild(option);
         });
-        
-        document.getElementById('current-shop-title').innerText = `${currentShop} Summary`;
     }
 
     function changeActiveShop() {
         const selector = document.getElementById('shop-selector');
         if (selector.value) {
             currentShop = selector.value;
-            document.getElementById('current-shop-title').innerText = `${currentShop} Summary`;
-            document.getElementById('filter-date').value = '';
-            updateUI();
         }
+        
+        document.getElementById('filter-date').value = '';
+        
+        const isPabo = (currentShop === "টাকা পাবো");
+        document.getElementById('date-field-container').style.display = isPabo ? 'none' : 'block';
+        document.getElementById('filter-section-box').style.display = isPabo ? 'none' : 'flex';
+        
+        const typeSelect = document.getElementById('type');
+        typeSelect.innerHTML = '';
+
+        if (isPabo) {
+            document.getElementById('label-income').innerText = "টাকা পাবো";
+            document.getElementById('label-expense').innerText = "টাকা পাবে";
+            
+            document.getElementById('label-expense').style.display = 'block';
+            document.getElementById('total-expense').parentElement.style.display = 'block';
+            document.getElementById('label-balance').style.display = 'none';
+            document.getElementById('net-balance').parentElement.style.display = 'none';
+
+            typeSelect.innerHTML = `
+                <option value="pabo">টাকা পাবো</option>
+                <option value="dibe">টাকা পাবে</option>
+            `;
+        } else {
+            document.getElementById('label-income').innerText = "Income";
+            document.getElementById('label-expense').innerText = "Expense";
+            document.getElementById('label-expense').style.display = 'block';
+            document.getElementById('total-expense').parentElement.style.display = 'block';
+            document.getElementById('label-balance').style.display = 'block';
+            document.getElementById('net-balance').parentElement.style.display = 'block';
+
+            typeSelect.innerHTML = `
+                <option value="expense">Expense</option>
+                <option value="income">Income</option>
+            `;
+        }
+
+        updateUI();
     }
 
     function addNewShop() {
@@ -535,7 +810,7 @@
             currentShop = shopName;
             saveUserData();
             renderShopSelector();
-            updateUI();
+            changeActiveShop();
         }
     }
 
@@ -566,7 +841,7 @@
 
             saveUserData();
             renderShopSelector();
-            updateUI();
+            changeActiveShop();
             alert("দোকানের নাম সফলভাবে পরিবর্তন হয়েছে!");
         }
     }
@@ -579,19 +854,19 @@
         const shops = getUserShops();
         const shopKeys = Object.keys(shops);
         
-        if (shopKeys.length <= 2) { // Shop 1 এবং 'টাকা পাবো' বাদ দিয়ে চেক
-            alert("কমপক্ষে একটি সাধারণ দোকান থাকা বাধ্যতামূলক, তাই এটি ডিলিট করা যাবে না!");
+        if (shopKeys.length <= 1) {
+            alert("কমপক্ষে একটি বিভাগ থাকা বাধ্যতামূলক, তাই এটি ডিলিট করা যাবে না!");
             return;
         }
 
         if (confirm(`আপনি কি সত্যিই '${currentShop}' দোকানটি এবং এর সমস্ত হিসাব মুছে ফেলতে চান?`)) {
             delete shops[currentShop];
             const remainingKeys = Object.keys(shops);
-            currentShop = remainingKeys[0] === "টাকা পাবো" ? remainingKeys[1] : remainingKeys[0];
+            currentShop = remainingKeys[0];
             
             saveUserData();
             renderShopSelector();
-            updateUI();
+            changeActiveShop();
             alert("দোকানটি সফলভাবে ডিলিট করা হয়েছে!");
         }
     }
@@ -611,7 +886,6 @@
             container.innerHTML = '<p style="text-align:center; color:#888;">কোনো দোকান নেই।</p>';
         } else {
             shopKeys.forEach(shopName => {
-                // "টাকা পাবো" দোকানটি ওভারভিউ মোডাল থেকে বাদ দেওয়া হলো
                 if (shopName === "টাকা পাবো") return;
 
                 const txns = shops[shopName].transactions || [];
@@ -636,24 +910,91 @@
                 card.innerHTML = `
                     <div class="shop-total-name">🏪 ${shopName}</div>
                     <div class="shop-total-details">
-                        <span style="color: #27ae60;">Income: ৳${shopIncome.toFixed(2)}</span>
-                        <span style="color: #c0392b;">Expense: ৳${shopExpense.toFixed(2)}</span>
-                        <span style="color: #2980b9; font-weight: bold;">Balance: ৳${shopBalance.toFixed(2)}</span>
+                        <span style="color: #1e8449;">${formatAmount(shopIncome)}</span>
+                        <span style="color: #b03a2e;">${formatAmount(shopExpense)}</span>
+                        <span style="color: #1b4f72;">${formatAmount(shopBalance)}</span>
                     </div>
                 `;
                 container.appendChild(card);
             });
         }
 
-        document.getElementById('modal-grand-income').innerText = `৳${grandIncome.toFixed(2)}`;
-        document.getElementById('modal-grand-expense').innerText = `৳${grandExpense.toFixed(2)}`;
-        document.getElementById('modal-grand-balance').innerText = `৳${(grandIncome - grandExpense).toFixed(2)}`;
+        document.getElementById('modal-grand-income').innerText = formatAmount(grandIncome);
+        document.getElementById('modal-grand-expense').innerText = formatAmount(grandExpense);
+        document.getElementById('modal-grand-balance').innerText = formatAmount(grandIncome - grandExpense);
 
         modal.style.display = 'flex';
     }
 
     function closeAllShopsModal() {
         document.getElementById('allShopsModal').style.display = 'none';
+    }
+
+    /* History Datewise Modal Logic */
+    function openHistoryModal() {
+        const modal = document.getElementById('historyModal');
+        const container = document.getElementById('history-modal-list-container');
+        container.innerHTML = '';
+
+        const shops = getUserShops();
+        const dateTotals = {};
+
+        Object.keys(shops).forEach(shopName => {
+            if (shopName === "টাকা পাবো") return;
+            const txns = shops[shopName].transactions || [];
+            txns.forEach(t => {
+                if (t.date) {
+                    const amt = parseFloat(t.amount) || 0;
+                    if (t.type === 'income') {
+                        dateTotals[t.date] = (dateTotals[t.date] || 0) + amt;
+                    } else if (t.type === 'expense') {
+                        dateTotals[t.date] = (dateTotals[t.date] || 0) - amt;
+                    }
+                }
+            });
+        });
+
+        const sortedDates = Object.keys(dateTotals).sort((a, b) => new Date(b) - new Date(a));
+
+        if (sortedDates.length === 0) {
+            container.innerHTML = '<p style="text-align:center; color:#888; font-size:13px; font-weight:bold; margin-top:10px;">কোনো হিস্ট্রি নেই।</p>';
+        } else {
+            sortedDates.forEach(date => {
+                const total = dateTotals[date];
+                const formattedDate = formatDateDDMMYYYY(date);
+                const card = document.createElement('div');
+                card.className = 'shop-total-item';
+                card.innerHTML = `
+                    <div class="shop-total-name">📅 ${formattedDate}</div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 13px; font-weight: 900; color: #1b4f72;">${formatAmount(total)}</span>
+                        <button type="button" class="delete-all-btn" onclick="deleteHistoryDate('${date}')">X</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        modal.style.display = 'flex';
+    }
+
+    function closeHistoryModal() {
+        document.getElementById('historyModal').style.display = 'none';
+    }
+
+    function deleteHistoryDate(date) {
+        const formattedDate = formatDateDDMMYYYY(date);
+        if (!confirm(formattedDate + " তারিখের সকল দোকানের সমস্ত এন্ট্রি মুছে ফেলতে চান?")) return;
+        const shops = getUserShops();
+        Object.keys(shops).forEach(shopName => {
+            if (shopName === "টাকা পাবো") return;
+            if (shops[shopName].transactions) {
+                shops[shopName].transactions = shops[shopName].transactions.filter(t => t.date !== date);
+            }
+        });
+        saveUserData();
+        updateUI();
+        openHistoryModal();
     }
 
     function updateUI() {
@@ -666,63 +1007,121 @@
         
         if (!shops[currentShop]) {
             const keys = Object.keys(shops);
-            currentShop = keys.length > 0 ? keys[0] : "Shop 1";
+            currentShop = keys.length > 0 ? keys[0] : "টাকা পাবো";
             if (!shops[currentShop]) {
                 shops[currentShop] = { transactions: [], notes: [] };
             }
         }
         
         const shopTransactions = shops[currentShop].transactions || [];
+        const isPabo = (currentShop === "টাকা পাবো");
 
-        let totalIncomeSum = 0;
-        let totalExpenseSum = 0;
-        const grouped = {};
+        const activeDateFilter = filterDate || getTodayDate();
+        let allShopsDailyTotal = 0;
 
-        shopTransactions.forEach((item) => {
-            const parsedAmount = parseFloat(item.amount) || 0;
-
-            if (item.type === 'income') totalIncomeSum += parsedAmount;
-            else totalExpenseSum += parsedAmount;
-
-            if (filterDate && item.date !== filterDate) return;
-
-            const key = `${item.date}_${item.type}`;
-            if (!grouped[key]) {
-                grouped[key] = { date: item.date, type: item.type, titles: [], totalAmount: 0, ids: [] };
-            }
-            grouped[key].titles.push(item.title);
-            grouped[key].totalAmount += parsedAmount;
-            grouped[key].ids.push(item.id);
+        Object.keys(shops).forEach(sName => {
+            if (sName === "টাকা পাবো") return;
+            const sTxns = shops[sName].transactions || [];
+            sTxns.forEach(t => {
+                if (t.date === activeDateFilter) {
+                    const amt = parseFloat(t.amount) || 0;
+                    if (t.type === 'income') allShopsDailyTotal += amt;
+                    else if (t.type === 'expense') allShopsDailyTotal -= amt;
+                }
+            });
         });
+        document.getElementById('daily-total-amount').innerText = formatAmount(allShopsDailyTotal);
 
-        const sortedKeys = Object.keys(grouped).sort((a, b) => new Date(b.split('_')[0]) - new Date(a.split('_')[0]));
+        if (isPabo) {
+            let totalPaboSum = 0;
+            let totalDibeSum = 0;
 
-        sortedKeys.forEach(key => {
-            const group = grouped[key];
-            const rowDiv = document.createElement('div');
-            const isIncome = group.type === 'income';
-            rowDiv.className = `daily-row ${isIncome ? 'income-row' : 'expense-row'}`;
-            
-            const sign = isIncome ? '+' : '-';
-            const amountColor = isIncome ? '#27ae60' : '#c0392b';
+            shopTransactions.forEach((item) => {
+                const parsedAmount = parseFloat(item.amount) || 0;
+                const isPaboType = (item.type === 'pabotype' || item.type === 'pabo');
 
-            rowDiv.innerHTML = `
-                <div>
-                    <div class="date-text">📅 ${group.date} (${isIncome ? 'Income' : 'Expense'})</div>
-                    <div class="titles-text">📝 ${group.titles.join(', ')}</div>
-                </div>
-                <div class="action-btns">
-                    <span class="total-amount" style="color: ${amountColor};">${sign}৳${group.totalAmount.toFixed(2)}</span>
-                    <button type="button" class="edit-btn" onclick="openEditModal('${group.date}', '${group.type}')">Edit</button>
-                    <button type="button" class="delete-all-btn" onclick="deleteGroup('${group.ids.join(",")}')">X</button>
-                </div>
-            `;
-            historyContainer.appendChild(rowDiv);
-        });
+                if (isPaboType) {
+                    totalPaboSum += parsedAmount;
+                } else {
+                    totalDibeSum += parsedAmount;
+                }
 
-        document.getElementById('total-income').innerText = `৳${totalIncomeSum.toFixed(2)}`;
-        document.getElementById('total-expense').innerText = `৳${totalExpenseSum.toFixed(2)}`;
-        document.getElementById('net-balance').innerText = `৳${(totalIncomeSum - totalExpenseSum).toFixed(2)}`;
+                const rowDiv = document.createElement('div');
+                rowDiv.className = `daily-row ${isPaboType ? 'pabo-row' : 'dibe-row'}`;
+                
+                const labelText = isPaboType ? 'টাকা পাবো' : 'টাকা পাবে';
+                const textColor = isPaboType ? '#1e8449' : '#b03a2e';
+
+                rowDiv.innerHTML = `
+                    <div>
+                        <div class="titles-text" style="font-size: 14px; font-weight: 900; color: #1a252f;">📝 ${item.title}</div>
+                        <div style="font-size: 11px; color: ${textColor}; font-weight: 900; margin-top: 1px;">${labelText}</div>
+                    </div>
+                    <div class="action-btns">
+                        <span class="total-amount" style="color: ${textColor};">${formatAmount(parsedAmount)}</span>
+                        <button type="button" class="edit-btn" onclick="openPaboEditModal('${item.id}')">Edit</button>
+                        <button type="button" class="delete-all-btn" onclick="deletePaboItem('${item.id}')">X</button>
+                    </div>
+                `;
+                historyContainer.appendChild(rowDiv);
+            });
+
+            document.getElementById('total-income').innerText = formatAmount(totalPaboSum);
+            document.getElementById('total-income').className = "income";
+            document.getElementById('total-expense').innerText = formatAmount(totalDibeSum);
+            document.getElementById('total-expense').className = "expense";
+        } else {
+            let totalIncomeSum = 0;
+            let totalExpenseSum = 0;
+            const grouped = {};
+
+            shopTransactions.forEach((item) => {
+                const parsedAmount = parseFloat(item.amount) || 0;
+
+                if (item.type === 'income') totalIncomeSum += parsedAmount;
+                else totalExpenseSum += parsedAmount;
+
+                if (filterDate && item.date !== filterDate) return;
+
+                const key = `${item.date}_${item.type}`;
+                if (!grouped[key]) {
+                    grouped[key] = { date: item.date, type: item.type, titles: [], totalAmount: 0, ids: [] };
+                }
+                grouped[key].titles.push(item.title);
+                grouped[key].totalAmount += parsedAmount;
+                grouped[key].ids.push(item.id);
+            });
+
+            const sortedKeys = Object.keys(grouped).sort((a, b) => new Date(b.split('_')[0]) - new Date(a.split('_')[0]));
+
+            sortedKeys.forEach(key => {
+                const group = grouped[key];
+                const rowDiv = document.createElement('div');
+                const isIncome = group.type === 'income';
+                rowDiv.className = `daily-row ${isIncome ? 'income-row' : 'expense-row'}`;
+                
+                const sign = isIncome ? '+' : '-';
+                const amountColor = isIncome ? '#1e8449' : '#b03a2e';
+                const formattedDate = formatDateDDMMYYYY(group.date);
+
+                rowDiv.innerHTML = `
+                    <div>
+                        <div class="date-text">📅 ${formattedDate} (${isIncome ? 'Income' : 'Expense'})</div>
+                        <div class="titles-text">📝 ${group.titles.join(', ')}</div>
+                    </div>
+                    <div class="action-btns">
+                        <span class="total-amount" style="color: ${amountColor};">${sign}${formatAmount(group.totalAmount)}</span>
+                        <button type="button" class="edit-btn" onclick="openEditModal('${group.date}', '${group.type}')">Edit</button>
+                        <button type="button" class="delete-all-btn" onclick="deleteGroup('${group.ids.join(",")}')">X</button>
+                    </div>
+                `;
+                historyContainer.appendChild(rowDiv);
+            });
+
+            document.getElementById('total-income').innerText = formatAmount(totalIncomeSum);
+            document.getElementById('total-expense').innerText = formatAmount(totalExpenseSum);
+            document.getElementById('net-balance').innerText = formatAmount(totalIncomeSum - totalExpenseSum);
+        }
 
         saveUserData();
     }
@@ -731,10 +1130,8 @@
         e.preventDefault();
         const title = document.getElementById('title').value.trim();
         const rawAmount = document.getElementById('amount').value;
-        const date = document.getElementById('entry-date').value;
-        const type = document.getElementById('type').value;
-
         const numAmount = parseFloat(rawAmount);
+
         if (isNaN(numAmount) || numAmount <= 0) {
             alert('সঠিক টাকার পরিমাণ লিখুন!');
             return;
@@ -745,16 +1142,27 @@
             shops[currentShop] = { transactions: [], notes: [] };
         }
 
-        shops[currentShop].transactions.push({
-            id: Date.now().toString() + Math.random().toString(36).substring(2, 5),
-            title, amount: numAmount, type, date
-        });
+        const typeVal = document.getElementById('type').value;
 
-        document.getElementById('filter-date').value = '';
+        if (currentShop === "টাকা পাবো") {
+            const actualType = (typeVal === 'pabo') ? 'pabotype' : 'dibetype';
+            shops[currentShop].transactions.push({
+                id: Date.now().toString() + Math.random().toString(36).substring(2, 5),
+                title, amount: numAmount, type: actualType
+            });
+        } else {
+            const date = document.getElementById('entry-date').value;
+            shops[currentShop].transactions.push({
+                id: Date.now().toString() + Math.random().toString(36).substring(2, 5),
+                title, amount: numAmount, type: typeVal, date
+            });
+            document.getElementById('filter-date').value = '';
+            document.getElementById('entry-date').value = getTodayDate();
+        }
+
         updateUI();
         document.getElementById('title').value = '';
         document.getElementById('amount').value = '';
-        document.getElementById('entry-date').value = getTodayDate();
     });
 
     function clearFilter() {
@@ -772,8 +1180,49 @@
         updateUI();
     }
 
+    function deletePaboItem(id) {
+        if (!confirm("আপনি কি এই এন্ট্রিটি মুছে ফেলতে চান?")) return;
+        const shops = getUserShops();
+        if (!shops[currentShop]) return;
+
+        shops[currentShop].transactions = shops[currentShop].transactions.filter(t => t.id !== id);
+        updateUI();
+    }
+
+    /* Calculator Logic */
+    function openCalcModal() {
+        document.getElementById('calcModal').style.display = 'flex';
+    }
+    function closeCalcModal() {
+        document.getElementById('calcModal').style.display = 'none';
+    }
+    let calcInput = "0";
+    function updateCalcScreen() {
+        document.getElementById('calc-screen').innerText = calcInput;
+    }
+    function calcAppend(val) {
+        if (calcInput === "0" && val !== '.') {
+            calcInput = val;
+        } else {
+            calcInput += val;
+        }
+        updateCalcScreen();
+    }
+    function calcClear() {
+        calcInput = "0";
+        updateCalcScreen();
+    }
+    function calcCalculate() {
+        try {
+            calcInput = eval(calcInput).toString();
+        } catch (e) {
+            calcInput = "Error";
+        }
+        updateCalcScreen();
+    }
+
     function openKeepModal() {
-        document.getElementById('modal-shop-note-title').innerText = `💡 ${currentShop} Notes`;
+        document.getElementById('modal-shop-note-title').innerText = `📖 ${currentShop} Notes`;
         document.getElementById('keepModal').style.display = 'flex';
         renderKeepNotes();
     }
@@ -831,19 +1280,22 @@
         const sortedNotes = [...shopNotes].sort((a, b) => new Date(b.date) - new Date(a.date));
         
         if (sortedNotes.length === 0) {
-            container.innerHTML = '<p style="text-align:center; color:#888; font-size:13px; margin-top:10px;">No notes for this shop.</p>';
+            container.innerHTML = '<p style="text-align:center; color:#666; font-size:12px; margin-top:6px; font-weight: bold;">No notes for this shop.</p>';
             return;
         }
 
         sortedNotes.forEach(note => {
+            const formattedDate = formatDateDDMMYYYY(note.date);
             const card = document.createElement('div');
-            card.className = 'keep-note-card';
+            card.className = 'note-row';
             card.innerHTML = `
-                <div class="keep-note-date">📌 ${note.date}</div>
-                <div class="keep-note-text">${note.content}</div>
-                <div style="display:flex; justify-content:flex-end; gap:6px;">
-                    <button type="button" onclick="editNote('${note.id}')" style="padding:3px 8px; font-size:10px; background:#f39c12;">Edit</button>
-                    <button type="button" onclick="deleteNote('${note.id}')" style="padding:3px 8px; font-size:10px; background:#e74c3c;">Delete</button>
+                <div>
+                    <div class="note-date">📌 ${formattedDate}</div>
+                    <div class="note-text">${note.content}</div>
+                </div>
+                <div class="action-btns">
+                    <button type="button" class="edit-btn" onclick="editNote('${note.id}')">Edit</button>
+                    <button type="button" class="delete-all-btn" onclick="deleteNote('${note.id}')">X</button>
                 </div>
             `;
             container.appendChild(card);
@@ -875,23 +1327,76 @@
         const container = document.getElementById('modal-items-container');
         container.innerHTML = '';
 
-        titleEl.innerText = `Edit Transactions (${date})`;
+        const formattedDate = formatDateDDMMYYYY(date);
+        titleEl.innerText = `Edit Transactions (${formattedDate})`;
 
         const shops = getUserShops();
         const txns = shops[currentShop].transactions.filter(t => t.date === date && t.type === type);
 
         txns.forEach(t => {
             const itemBox = document.createElement('div');
-            itemBox.style.cssText = "margin-bottom: 12px; padding: 10px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 6px;";
+            itemBox.style.cssText = "margin-bottom: 8px; padding: 6px; background: #f8f9fa; border: 1px solid #ccc; border-radius: 8px;";
             itemBox.innerHTML = `
-                <input type="text" id="edit_title_${t.id}" value="${t.title}" style="width:100%; margin-bottom:6px; padding:6px; font-size: 16px;" />
-                <input type="number" id="edit_amount_${t.id}" value="${t.amount}" step="any" style="width:100%; margin-bottom:6px; padding:6px; font-size: 16px;" />
-                <button type="button" onclick="saveSingleTransactionEdit('${t.id}')" style="padding:6px 12px; font-size:12px; background:#27ae60;">Save</button>
+                <input type="text" id="edit_title_${t.id}" value="${t.title}" style="margin-bottom:5px; font-weight: bold;" />
+                <input type="number" id="edit_amount_${t.id}" value="${t.amount}" step="any" style="margin-bottom:5px; font-weight: bold;" />
+                <button type="button" onclick="saveSingleTransactionEdit('${t.id}')" style="background:#27ae60; width:100%; font-weight: bold; color:white; border:none; height:40px; border-radius:6px; cursor:pointer;">Save</button>
             `;
             container.appendChild(itemBox);
         });
 
         modal.style.display = 'flex';
+    }
+
+    function openPaboEditModal(id) {
+        const modal = document.getElementById('editModal');
+        const titleEl = document.getElementById('modal-date-title');
+        const container = document.getElementById('modal-items-container');
+        container.innerHTML = '';
+
+        titleEl.innerText = `Edit Entry`;
+
+        const shops = getUserShops();
+        const t = shops[currentShop].transactions.find(item => item.id === id);
+
+        if (t) {
+            const isPaboType = (t.type === 'pabotype' || t.type === 'pabo');
+            const itemBox = document.createElement('div');
+            itemBox.style.cssText = "margin-bottom: 8px; padding: 6px; background: #f8f9fa; border: 1px solid #ccc; border-radius: 8px;";
+            itemBox.innerHTML = `
+                <input type="text" id="edit_title_${t.id}" value="${t.title}" style="margin-bottom:5px; font-weight: bold;" />
+                <input type="number" id="edit_amount_${t.id}" value="${t.amount}" step="any" style="margin-bottom:5px; font-weight: bold;" />
+                <select id="edit_type_${t.id}" style="margin-bottom:5px; font-weight: bold;">
+                    <option value="pabotype" ${isPaboType ? 'selected' : ''}>টাকা পাবো</option>
+                    <option value="dibetype" ${!isPaboType ? 'selected' : ''}>টাকা পাবে</option>
+                </select>
+                <button type="button" onclick="savePaboEdit('${t.id}')" style="background:#27ae60; width:100%; font-weight: bold; color:white; border:none; height:40px; border-radius:6px; cursor:pointer;">Save</button>
+            `;
+            container.appendChild(itemBox);
+        }
+
+        modal.style.display = 'flex';
+    }
+
+    function savePaboEdit(id) {
+        const newTitle = document.getElementById(`edit_title_${id}`).value.trim();
+        const newAmount = parseFloat(document.getElementById(`edit_amount_${id}`).value);
+        const newType = document.getElementById(`edit_type_${id}`).value;
+
+        if (!newTitle || isNaN(newAmount) || newAmount <= 0) {
+            alert("সঠিক তথ্য দিন!");
+            return;
+        }
+
+        const shops = getUserShops();
+        const txn = shops[currentShop].transactions.find(t => t.id === id);
+        if (txn) {
+            txn.title = newTitle;
+            txn.amount = newAmount;
+            txn.type = newType;
+            saveUserData();
+            alert("সফলভাবে আপডেট হয়েছে!");
+            closeEditModal();
+        }
     }
 
     function closeEditModal() {
@@ -945,9 +1450,9 @@
         textArea.select();
         textArea.setSelectionRange(0, 99999);
         navigator.clipboard.writeText(textArea.value).then(() => {
-            alert("ব্যাকআপ কোড কপি হয়ে গেছে! এটি আপনার আইফোনের Notes অ্যাপে পেস্ট করে সেভ করে রাখুন।");
+            alert("ব্যাকআপ কোড কপি হয়ে গেছে! এটি আপনার আইফোনের নোটসে পেস্ট করে রাখুন।");
         }).catch(err => {
-            alert("কপি করা যায়নি, দয়া করে টেক্সট সিলেক্ট করে ম্যানুয়ালি কপি করুন।");
+            alert("কপি করা যায়নি!");
         });
     }
 
