@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Shop Expense Tracker with Login</title>
-
 <meta name="apple-mobile-web-app-capable" content="yes">
 
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <meta name="apple-mobile-web-app-title" content="Shop Tracker">
-
     <style>
         * { 
             box-sizing: border-box; 
@@ -937,45 +935,65 @@
         document.getElementById('allShopsModal').style.display = 'none';
     }
 
-    /* History Datewise Modal Logic */
+    /* History Datewise Modal Logic with Shop Details */
     function openHistoryModal() {
         const modal = document.getElementById('historyModal');
         const container = document.getElementById('history-modal-list-container');
         container.innerHTML = '';
 
         const shops = getUserShops();
-        const dateTotals = {};
+        const dateMap = {};
 
+        // Group transactions by date, and within each date, group by shop
         Object.keys(shops).forEach(shopName => {
             if (shopName === "টাকা পাবো") return;
             const txns = shops[shopName].transactions || [];
             txns.forEach(t => {
                 if (t.date) {
                     const amt = parseFloat(t.amount) || 0;
+                    if (!dateMap[t.date]) {
+                        dateMap[t.date] = { total: 0, shops: {} };
+                    }
+                    if (!dateMap[t.date].shops[shopName]) {
+                        dateMap[t.date].shops[shopName] = 0;
+                    }
                     if (t.type === 'income') {
-                        dateTotals[t.date] = (dateTotals[t.date] || 0) + amt;
+                        dateMap[t.date].total += amt;
+                        dateMap[t.date].shops[shopName] += amt;
                     } else if (t.type === 'expense') {
-                        dateTotals[t.date] = (dateTotals[t.date] || 0) - amt;
+                        dateMap[t.date].total -= amt;
+                        dateMap[t.date].shops[shopName] -= amt;
                     }
                 }
             });
         });
 
-        const sortedDates = Object.keys(dateTotals).sort((a, b) => new Date(b) - new Date(a));
+        const sortedDates = Object.keys(dateMap).sort((a, b) => new Date(b) - new Date(a));
 
         if (sortedDates.length === 0) {
             container.innerHTML = '<p style="text-align:center; color:#888; font-size:13px; font-weight:bold; margin-top:10px;">কোনো হিস্ট্রি নেই।</p>';
         } else {
             sortedDates.forEach(date => {
-                const total = dateTotals[date];
+                const dayData = dateMap[date];
                 const formattedDate = formatDateDDMMYYYY(date);
+                
+                let shopDetailsHtml = '';
+                Object.keys(dayData.shops).forEach(sName => {
+                    shopDetailsHtml += `<div style="font-size: 11px; color: #555; margin-left: 10px; font-weight: bold;">• ${sName}: ${formatAmount(dayData.shops[sName])}</div>`;
+                });
+
                 const card = document.createElement('div');
-                card.className = 'shop-total-item';
+                card.style.cssText = "background: #fafafa; border: 1px solid #d5dbdb; border-left: 5px solid #f39c12; border-radius: 8px; padding: 8px 10px; margin-bottom: 6px;";
                 card.innerHTML = `
-                    <div class="shop-total-name">📅 ${formattedDate}</div>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span style="font-size: 13px; font-weight: 900; color: #1b4f72;">${formatAmount(total)}</span>
-                        <button type="button" class="delete-all-btn" onclick="deleteHistoryDate('${date}')">X</button>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                        <div style="font-weight: 800; font-size: 13px; color: #1a252f;">📅 ${formattedDate}</div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 13px; font-weight: 900; color: #1b4f72;">Total: ${formatAmount(dayData.total)}</span>
+                            <button type="button" class="delete-all-btn" onclick="deleteHistoryDate('${date}')">X</button>
+                        </div>
+                    </div>
+                    <div style="border-top: 1px dashed #ddd; padding-top: 4px;">
+                        ${shopDetailsHtml}
                     </div>
                 `;
                 container.appendChild(card);
